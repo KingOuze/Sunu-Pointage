@@ -1,0 +1,68 @@
+<div class="layout">
+    <!-- Barre latérale -->
+    <app-sidebar></app-sidebar>
+  
+    <!-- Contenu principal -->
+    <div class="content">
+      <!-- Barre supérieure -->
+      <div class="top-bar">
+        <input type="text" placeholder="Rechercher..." class="search-bar" />
+        <div class="actions">
+          <label for="file-upload" class="upload-btn">
+            <i class="bi bi-upload"></i> Uploader un fichier CSV
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            (change)="onFileUpload($event)"
+            hidden
+          />
+          <button class="add-btn">
+            <i class="bi bi-plus-circle"></i>
+            <a href="/inscription" style="text-decoration: none; color: inherit;">
+              Ajouter Employé
+            </a>
+          
+          </button>
+        </div>
+      </div>
+  
+      <!-- Tableau des apprenants -->
+      <div class="table-container">
+        <h2>Liste des employés</h2>
+        <table class="learners-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nom</th>
+              <th>Catégorie</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let learner of learners; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ learner.name }}</td>
+              <td>{{ learner.category }}</td>
+              <td>{{ learner.email }}</td>
+              <td>
+                <a [routerLink]="['/modification', learner.id]" style="text-decoration: none; color: inherit;">
+                    <i class="bi bi-pencil edit-icon"></i>
+                  </a>
+                <i class="bi bi-trash delete-icon"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Pagination -->
+      <div class="pagination">
+        <button>&lt;</button>
+        <span>1</span>
+        <button>&gt;</button>
+      </div>
+    </div>
+  </div>
+  

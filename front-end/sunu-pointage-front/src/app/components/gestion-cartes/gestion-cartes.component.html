@@ -1,0 +1,57 @@
+<div class="main-container">
+    <app-sidebar></app-sidebar>
+  
+    <div class="content">
+      <div class="header">
+        <h2>Membres</h2>
+        <input type="text" placeholder="Rechercher..." class="search-bar" />
+      </div>
+  
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" /></th>
+              <th>Prénom et nom</th>
+              <th>État de la carte</th>
+              <th>Fonctions</th>
+              <th>Email</th>
+              <th>Assignation</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let membre of membres">
+              <td><input type="checkbox" /></td>
+              <td>{{ membre.nom }}</td>
+              <td>
+                <span [ngClass]="membre.etat === 'Active' ? 'active' : 'inactive'">
+                  {{ membre.etat }}
+                </span>
+              </td>
+              <td>{{ membre.fonction }}</td>
+              <td>{{ membre.email }}</td>
+              <td>
+                <button class="assign-button" routerLink="/assigner-carte">
+                  Assigner
+                </button>
+              </td>
+              
+              <td>
+                <button class="delete-button">
+                  <span>&#x2716;</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="pagination">
+        <button class="previous">Previous</button>
+        <span>Page 1 of 10</span>
+        <button class="next">Next</button>
+      </div>
+    </div>
+  </div>
+  

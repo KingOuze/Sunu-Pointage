@@ -1,0 +1,25 @@
+<div class="assign-card-container">
+    <h2>Assigner une carte</h2>
+  
+    <div class="form-container">
+      <div class="form-group">
+        <label for="card-number">Numéro de la carte</label>
+        <input type="text" id="card-number" placeholder="Entrez le numéro de la carte" />
+      </div>
+  
+      <div class="form-group">
+        <label for="registration-date">Date d'enregistrement</label>
+        <div class="date-input">
+          <input type="date" id="registration-date" />
+          <span class="calendar-icon">&#128197;</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="buttons-container">
+      <button class="validate-button">Valider</button>
+      <button class="return-button" (click)="goBack()">Retour</button>
+
+    </div>
+  </div>
+  
