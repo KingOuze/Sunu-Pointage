@@ -1,0 +1,26 @@
+<div class="dashboard-container">
+  <!-- Header avec logo et bouton Déconnexion -->
+  <header class="dashboard-header">
+    <div class="logo-container">
+      <img src="../../assets/Sunu pointage (3).png" alt="Logo" class="logo">
+    </div>
+    <h1 class="dashboard-title">Dashboard Vigile</h1>
+    <button class="btn btn-custom">Déconnexion</button>
+
+  </header>
+
+  <!-- Composant Horloge -->
+  <section class="clock-section my-4">
+   <app-clock></app-clock>
+  </section>
+
+  <!-- Section principale avec image en arrière-plan -->
+  <div class="main-content-with-bg">
+    <h2 class="status-text">Pointage En Attente..!!</h2>
+    
+    <!-- Bouton d'accès positionné en bas à gauche -->
+    <div class="door-access-wrapper">
+      <app-door-access></app-door-access>
+    </div>
+  </div>
+</div>

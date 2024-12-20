@@ -1,0 +1,9 @@
+<div class="text-center">
+  <button 
+    class="btn" 
+    [class.btn-danger]="isDoorOpen" 
+    [class.btn-secondary]="!isDoorOpen" 
+    (click)="toggleDoor()">
+    {{ isDoorOpen ? 'Fermeture de la porte' : 'Ouverture de la porte' }}
+  </button>
+</div>

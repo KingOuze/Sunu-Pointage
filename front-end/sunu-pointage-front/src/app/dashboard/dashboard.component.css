@@ -1,0 +1,148 @@
+/* Conteneur principal */
+.dashboard-container {
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+  font-family: Arial, sans-serif;
+}
+
+/* En-tête */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 90px;
+  height: auto;
+}
+
+.dashboard-title {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Section principale avec background */
+.main-content-with-bg {
+  position: relative; /* Nécessaire pour positionner les éléments absolus */
+  height: 810px; /* Ajustez cette valeur en fonction de la taille de votre image */
+  background-image: url('../../assets/Image collée.png'); /* Image en background */
+  background-size: cover; /* Couvre tout l'espace disponible */
+  background-position: center; /* Centrer l'image */
+  background-repeat: no-repeat; /* Pas de répétition */
+  border-radius: 8px;
+  display: flex; /* Flexbox pour aligner le contenu */
+  flex-direction: column;
+  justify-content: center; /* Centré verticalement */
+  align-items: center; /* Centré horizontalement */
+  color: #fff; /* Texte en blanc */
+}
+
+/* Texte principal */
+.status-text {
+  font-size: 30px;
+  margin: 0;
+  color: #BF202F;
+  padding-bottom: 70%;
+}
+
+/* Positionnement du bouton d'accès */
+.door-access-wrapper {
+  position: absolute; /* Positionnement en bas à gauche */
+  bottom: 10px;
+  left: 10px;
+}
+
+/* Section des composants */
+.clock-section {
+  margin: 20px 0;
+}
+
+/* Boutons */
+.btn {
+  transition: background-color 0.3s ease;
+}
+/* Style personnalisé pour le bouton Déconnexion */
+.btn-custom {
+  background-color: white; /* Fond blanc */
+  color: #BF202F; /* Texte rouge */
+  border: 2px solid #BF202F; /* Bordure rouge */
+  border-radius: 4px; /* Bords légèrement arrondis (rectangle) */
+  padding: 10px 20px; /* Espacement interne */
+  font-weight: bold; /* Texte en gras */
+  font-size: 1rem; /* Taille de la police */
+  cursor: pointer; /* Curseur pointeur */
+  transition: all 0.3s ease; /* Transition pour l'effet au survol */
+}
+
+/* Effet au survol */
+.btn-custom:hover {
+  background-color: #BF202F; /* Fond rouge */
+  color: white; /* Texte blanc */
+}
+
+/* Style responsive pour différentes tailles d'écran */
+@media (max-width: 1024px) {
+  .main-content-with-bg {
+    height: 400px;
+  }
+  .status-text {
+    font-size: 1rem;
+    padding-bottom: 20%;
+  }
+  .btn-custom {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column; /* En-tête sur plusieurs lignes */
+    text-align: center;
+  }
+  .logo {
+    max-width: 80px; /* Réduction de la taille du logo */
+  }
+  .dashboard-title {
+    font-size: 1.2rem;
+  }
+  .main-content-with-bg {
+    height: 300px;
+  }
+  .status-text {
+    font-size: 0.9rem;
+    padding-bottom: 10%;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+  .dashboard-title {
+    font-size: 1rem;
+  }
+  .btn-custom {
+    font-size: 0.8rem;
+    padding: 8px 15px;
+  }
+  .main-content-with-bg {
+    height: 250px;
+  }
+  .status-text {
+    font-size: 0.8rem;
+  }
+}
+
