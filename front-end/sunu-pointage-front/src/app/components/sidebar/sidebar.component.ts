@@ -26,7 +26,7 @@ import { Component } from '@angular/core';
     /* Style principal du sidebar */
     .sidebar {
       width: 250px;
-      background: #FFFFFF; /* Couleur de fond sombre */
+      background: #EAECF0; /* Couleur de fond sombre */
       height: 100vh;
       color: #242220; /* Texte en noir */
       font-family: Arial, sans-serif;

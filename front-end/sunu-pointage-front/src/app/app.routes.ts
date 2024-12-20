@@ -10,8 +10,9 @@ import { AjoutdepartementComponent } from './components/ajoutdepartement/ajoutde
 import { AttendanceListComponent } from './components/attendance-list/attendance-list.component';
 import { GestionCartesComponent } from './components/gestion-cartes/gestion-cartes.component';
 import { AssignerCarteComponent } from './components/assigner-carte/assigner-carte.component';
+import { ConnexionComponent } from './connexion/connexion.component';
 export const appRoutes: Routes = [  // Exportez correctement appRoutes
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },  // Redirection par défaut
+  { path: '', redirectTo: '/connexion', pathMatch: 'full' },  // Redirection par défaut
   { path: 'dashboard', component: DashboardComponent },      // Route pour le dashboard
   { path: 'learners', component: LearnersComponent },        // Gestion des employés
   { path: 'inscription', component: InscriptionComponent },  // Route pour l'inscription
@@ -23,5 +24,6 @@ export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: 'attendance-list', component: AttendanceListComponent }, // Route pour la modification
   { path: 'gestion-cartes', component: GestionCartesComponent }, // Route pour la modification
   { path: 'assigner-carte', component: AssignerCarteComponent }, // Route pour la modification
+  { path: 'connexion', component: ConnexionComponent }, // Route pour la modification
 
 ];

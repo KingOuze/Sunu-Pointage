@@ -1,0 +1,38 @@
+<div class="container">
+    <!-- Zone gauche avec image de fond -->
+    <div class="left" style="background-image: url('assets/connexion.png'); background-size: cover; background-position: center;">
+        <h1 style="color: white; font-size: 20px;">Votre système automatique pour la gestion de présences sécurisé et fiable</h1>
+
+     
+    </div>
+  
+    <!-- Zone droite avec le formulaire -->
+    <div class="right">
+      <div class="logo">
+        <img src="assets/image.png" alt="Logo" />
+        <h2>Connexion</h2>
+      </div>
+      <form>
+        <label for="email">Email*</label>
+        <input type="email" id="email" placeholder="Enter l'email" required />
+  
+        <label for="password">Mot de passe*</label>
+        <div class="password-wrapper">
+          <input
+            type="{{ isPasswordVisible ? 'text' : 'password' }}"
+            id="password"
+            placeholder="Enter le mot de passe"
+            required
+          />
+          <span class="toggle-password" (click)="togglePasswordVisibility()">
+            👁
+          </span>
+        </div>
+  
+        <a href="#">Mot de passe oublié</a>
+        <button type="submit" class="button" (click)="onLogin()">Se connecter</button>
+      </form>
+      <button class="validate-card">Valider avec sa carte</button>
+    </div>
+  </div>
+  

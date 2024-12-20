@@ -1,0 +1,111 @@
+.container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .left {
+    flex: 1;
+    background: linear-gradient(135deg, #800000, #bf0020);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .logo img {
+    max-width: 100px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-top: 1rem;
+    align-items: stretch; /* Assure que les éléments à l'intérieur prennent toute la largeur */
+  }
+  
+  label {
+    margin: 0.5rem 0 0.2rem;
+  }
+  
+  input {
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: 100%; /* Assure que les champs prennent toute la largeur disponible */
+  }
+  
+  input:focus {
+    border-color: #bf0020;
+    box-shadow: 0 4px 6px rgba(191, 0, 32, 0.4);
+    outline: none;
+  }
+  
+  .password-wrapper {
+    position: relative;
+  }
+  
+  .password-wrapper .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  button {
+    padding: 0.7rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #800000, #bf0020);
+    color: white;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    background: linear-gradient(135deg, #bf0020, #800000);
+  }
+  
+  .validate-card {
+    background: transparent;
+    color: #bf0020;
+    border: 2px solid #bf0020;
+    border-radius: 20px;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .validate-card:hover {
+    background: linear-gradient(135deg, #bf0020, #800000);
+    color: white;
+  }
+  
+  a {
+    color: #bf0020;
+    text-align: right;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
