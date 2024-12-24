@@ -1,0 +1,49 @@
+<div class="login-container">
+  <div class="left-panel">
+    <img src="../../../assets/img-back.png" alt="Background" class="left-panel-image" />
+  </div>
+  
+
+  <div class="right-panel">
+    <img src="../../../assets/Sunu_pointage_logo.png" alt="Sunu Pointage Logo" class="logo" />
+
+    <h1><Strong>Connexion</Strong></h1>
+    <form (submit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="Entrer l'email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="password-field">
+          <input
+            id="password"
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Entrer le mot de passe"
+            required
+          />
+          <button type="button" class="show-password" (click)="togglePassword()">
+            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+          </button>
+          
+        </div>
+      </div>
+
+      <button type="submit" class="login-button">Se connecter</button>
+    </form>
+
+    <p class="card-option">Poser la carte sur le lecteur pour se connecter</p>
+  </div>
+</div>
+
+  

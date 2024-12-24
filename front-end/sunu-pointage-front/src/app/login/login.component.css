@@ -1,0 +1,114 @@
+/* Conteneur principal */
+.login-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Panneau gauche */
+.left-panel {
+  background: linear-gradient(to bottom, #5e0f25, #933154); /* Optionnel si l'image est transparente */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.left-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Permet de couvrir tout le panneau */
+}
+
+
+/* Panneau droit */
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 40px;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 220px; /* Ajustez la taille si nécessaire */
+  height: auto;
+}
+
+h3 {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.password-field {
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  flex: 1;
+}
+
+.show-password {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+  color: #555;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #d92525;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #a71b1b;
+}
+
+.card-option {
+  margin-top: 1.5rem;
+  font-weight: bold;
+  color: black;
+}
+
+
