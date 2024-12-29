@@ -31,11 +31,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
           // Vérifiez si 'data.user' existe avant de l'utiliser
           if (data && data.user) {
             this.users = [data.user]; // Mise à jour des utilisateurs avec l'utilisateur reçu
-            this.userExists = this.users.length > 0; // Vérification s'il y a un utilisateur
+            this.userExists = true; // Indiquer qu'un utilisateur existe
           } else {
             console.error('Aucune donnée valide reçue:', data);
             this.users = []; // Réinitialiser les utilisateurs si les données sont invalides
-            this.userExists = false;
+            this.userExists = false; // Aucun utilisateur existant
           }
         },
         (error) => {
@@ -50,8 +50,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  // Méthode pour vérifier si un utilisateur existe (si un utilisateur est détecté)
-  hasUser(): boolean { // Renommée pour éviter la duplication
+  // Méthode pour vérifier si un utilisateur existe
+  hasUser(): boolean {
     return this.userExists;
+  }
+
+  // Méthode qui permet de revenir à l'écran par défaut après une action
+  goToDefaultDashboard(): void {
+    this.userExists = false; // Réinitialiser l'état de l'utilisateur
+    this.users = []; // Réinitialiser les informations utilisateur
+  }
+
+  // Méthode de validation après une action spécifique
+  validateAction(): void {
+    // Simuler une action de validation, puis revenir à l'écran par défaut
+    console.log('Validation effectuée');
+    this.goToDefaultDashboard();
   }
 }

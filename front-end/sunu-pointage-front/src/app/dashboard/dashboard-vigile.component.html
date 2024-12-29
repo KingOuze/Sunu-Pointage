@@ -4,7 +4,6 @@
   <header class="dashboard-header">
     <img src="../../assets/Sunu pointage (3).png" alt="Logo" class="logo">
     <h1 class="dashboard-title">Dashboard Vigile</h1>
-    <button class="btn btn-custom">Déconnexion</button>
   </header>
 
   <div class="dashboard-container">
@@ -48,8 +47,8 @@
   
       <!-- Boutons positionnés à droite -->
       <div class="validation-buttons">
-        <button class="btn btn-custom">Rejeter</button>
-        <button class="btn btn-danger">Valider</button>
+        <button class="btn btn-custom" (click)="goToDefaultDashboard()">Rejeter</button> <!-- Rejeter / Quitter -->
+        <button class="btn btn-danger" (click)="validateAction()">Valider</button> <!-- Valider et revenir à l'écran par défaut -->
       </div>
     </footer>
   </div>
@@ -63,7 +62,6 @@
       <img src="../../assets/Sunu pointage (3).png" alt="Logo" class="logo">
     </div>
     <h1 class="dashboard-title">Dashboard Vigile</h1>
-    <button class="btn btn-custom">Déconnexion</button>
   </header>
 
   <!-- Composant Horloge -->
