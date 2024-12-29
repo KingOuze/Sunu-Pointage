@@ -28,4 +28,13 @@ export class WebSocketService {
   disconnect(): void {
     this.socket?.close();
   }
+
+  // Méthode pour envoyer une commande via WebSocket
+  sendCommand(command: { action: string }): void {
+    if (this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(command));
+    } else {
+      console.error('WebSocket n\'est pas connecté.');
+    }
+  }
 }

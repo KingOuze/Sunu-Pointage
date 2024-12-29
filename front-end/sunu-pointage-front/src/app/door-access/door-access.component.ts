@@ -1,19 +1,26 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { WebSocketService } from '../websocket.service';
 
 @Component({
   selector: 'app-door-access',
-  standalone: true,
-  imports: [CommonModule], // Retirez NgModule de cette liste
   templateUrl: './door-access.component.html',
-  styleUrls: ['./door-access.component.css']
+  standalone: true,
+  styleUrls: ['./door-access.component.css'],
 })
 export class DoorAccessComponent {
-  // État de la porte : ouverte (true) ou fermée (false)
-  isDoorOpen: boolean = false;
+  isDoorOpen: boolean = false; // État de la porte
+
+  constructor(private webSocketService: WebSocketService) {}
 
   // Méthode pour basculer l'état de la porte
   toggleDoor(): void {
     this.isDoorOpen = !this.isDoorOpen;
+    const command = this.isDoorOpen ? 'OPEN' : 'CLOSE';
+    this.sendCommand(command);
+  }
+
+  // Envoyer la commande via le service WebSocket
+  private sendCommand(command: string): void {
+    this.webSocketService.sendCommand({ action: command });
   }
 }
