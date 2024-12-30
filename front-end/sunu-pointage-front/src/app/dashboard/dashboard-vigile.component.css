@@ -6,6 +6,9 @@
   font-family: Arial, sans-serif; /* Police de caractères */
   padding-bottom: 40px; /* Ajouté pour espacer le footer */
 }
+.dashboard-title{
+  padding-left: 20%;
+}
 
 /* En-tête */
 .dashboard-header {

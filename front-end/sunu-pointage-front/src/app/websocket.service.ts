@@ -37,4 +37,12 @@ export class WebSocketService {
       console.error('WebSocket n\'est pas connecté.');
     }
   }
+   // Méthode pour envoyer un message via WebSocket
+   send(command: { action: string, user: any }): void {
+    if (this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(command));
+    } else {
+      console.error('WebSocket n\'est pas connecté.');
+    }
+  }
 }

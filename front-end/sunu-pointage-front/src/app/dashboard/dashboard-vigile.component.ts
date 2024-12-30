@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { WebSocketService } from '../websocket.service'; // Import du service WebSocket
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userExists: boolean = false; // Variable pour vérifier si un utilisateur est trouvé
   private unsubscribe$ = new Subject<void>(); // Pour gérer les désabonnements
 
-  constructor(private webSocketService: WebSocketService) {}
+  constructor(private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     // Connexion au WebSocket et réception des données en temps réel
@@ -57,14 +57,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // Méthode qui permet de revenir à l'écran par défaut après une action
   goToDefaultDashboard(): void {
-    this.userExists = false; // Réinitialiser l'état de l'utilisateur
-    this.users = []; // Réinitialiser les informations utilisateur
+    setTimeout(() => {
+      this.userExists = false; // Réinitialiser l'état de l'utilisateur
+      this.users = []; // Réinitialiser les informations utilisateur
+      this.cdr.detectChanges(); // Détecter manuellement les changements de détection
+    }, 100); // Ajouter un léger délai pour permettre au template de se mettre à jour correctement
   }
 
   // Méthode de validation après une action spécifique
   validateAction(): void {
-    // Simuler une action de validation, puis revenir à l'écran par défaut
-    console.log('Validation effectuée');
-    this.goToDefaultDashboard();
+    if (this.userExists) {
+      console.log('Validation effectuée pour', this.users[0].nom);
+
+      // Envoi d'un message WebSocket pour valider le pointage
+      this.webSocketService.send({
+        action: 'VALIDATE',  // Action spécifique pour valider
+        user: this.users[0], // Envoi des informations de l'utilisateur
+      });
+
+      // Réinitialiser l'état après validation
+      this.goToDefaultDashboard();
+    }
+  }
+
+  rejectAction(): void {
+    if (this.userExists) {
+      console.log('Rejet effectué pour', this.users[0].nom);
+
+      // Envoi d'un message WebSocket pour rejeter l'action
+      this.webSocketService.send({
+        action: 'REJECT',  // Action spécifique pour rejeter
+        user: this.users[0], // Envoi des informations de l'utilisateur
+      });
+
+      // Réinitialiser l'état après rejet et revenir au dashboard par défaut
+      this.goToDefaultDashboard();
+    }
   }
 }
