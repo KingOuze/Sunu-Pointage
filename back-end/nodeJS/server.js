@@ -62,47 +62,7 @@ const broadcastUserData = (user) => {
   });
 };
 
-// Écouteur d'événements WebSocket
-wss.on('connection', (ws) => {
-  console.log('Un client est connecté');
-
-  // Gestion des messages reçus par WebSocket
-  ws.on('message', (message) => {
-    try {
-      const { action, user } = JSON.parse(message); // Parse le message reçu
-
-      // Gestion des commandes OPEN et CLOSE
-      if (action === 'OPEN') {
-        console.log('Commande reçue : OUVERTURE');
-        port.write('OPEN\n'); // Envoi au port série pour ouvrir la porte
-      } else if (action === 'CLOSE') {
-        console.log('Commande reçue : FERMETURE');
-        port.write('CLOSE\n'); // Envoi au port série pour fermer la porte
-      }
-      // Validation du pointage
-      else if (action === 'VALIDATE' && user) {
-        console.log('Validation du pointage pour', user.nom);
-        enregistrerPointage(user); // Enregistrer le pointage après validation
-      }
-      // Rejet du pointage
-      else if (action === 'REJECT' && user) {
-        console.log('Pointage rejeté pour', user.nom);
-        broadcastUserData(user); // Vous pouvez décider de la gestion du rejet ici
-      }
-      else {
-        console.log('Commande inconnue :', action);
-      }
-    } catch (err) {
-      console.error('Erreur lors de la gestion de la commande :', err.message);
-    }
-  });
-
-  ws.on('close', () => {
-    console.log('Un client est déconnecté');
-  });
-});
-
-// Fonction pour enregistrer un pointage
+// Fonction pour enregistrer un pointage après validation
 const enregistrerPointage = async (user) => {
   try {
     // Déterminer le statut (entrée ou sortie)
@@ -119,11 +79,78 @@ const enregistrerPointage = async (user) => {
     // Sauvegarder le pointage dans la base de données
     await pointage.save();
 
-    console.log(`Pointage enregistré : ${status} pour ${user.nom} ${user.prenom}`);
+    console.log(`Pointage validé et enregistré : ${status} pour ${user.nom} ${user.prenom}`);
   } catch (err) {
-    console.error('Erreur lors de l\'enregistrement du pointage:', err.message);
+    console.error('Erreur lors de l\'enregistrement du pointage :', err.message);
   }
 };
+
+// Gestion des données reçues via WebSocket
+wss.on('connection', (ws) => {
+  console.log('Un client est connecté');
+
+  ws.on('message', async (message) => {
+    try {
+      const { action, user } = JSON.parse(message); // Parse le message reçu
+      // Gestion des commandes OPEN et CLOSE
+      if (action === 'OPEN') {
+        console.log('Commande reçue : OUVERTURE');
+        port.write('OPEN\n'); // Envoi au port série pour ouvrir la porte
+      } else if (action === 'CLOSE') {
+        console.log('Commande reçue : FERMETURE');
+        port.write('CLOSE\n'); // Envoi au port série pour fermer la porte
+      }
+
+      // Validation du pointage
+      if (action === 'VALIDATE' && user) {
+        console.log('Validation du pointage pour', user.nom);
+        await enregistrerPointage(user); // Enregistrer le pointage après validation
+
+        // Diffuser un message au frontend pour indiquer la validation
+        ws.send(JSON.stringify({
+          success: true,
+          message: `Pointage validé pour ${user.nom} ${user.prenom}`,
+        }));
+      } else if (action === 'REJECT' && user) {
+        console.log('Pointage rejeté pour', user.nom);
+
+        // Diffuser un message au frontend pour indiquer le rejet
+        ws.send(JSON.stringify({
+          success: true,
+          message: `Pointage rejeté pour ${user.nom} ${user.prenom}`,
+        }));
+      } else {
+        console.log('Commande inconnue ou utilisateur non spécifié :', action);
+      }
+    } catch (err) {
+      console.error('Erreur lors de la gestion du message WebSocket :', err.message);
+    }
+  });
+
+  ws.on('close', () => {
+    console.log('Un client est déconnecté');
+  });
+});
+
+// Suppression de l'enregistrement automatique dans parser.on('data')
+parser.on('data', async (data) => {
+  const cardId = data.replace(/[\r\n]/g, '').trim().replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  console.log('Carte détectée (nettoyée) :', cardId);
+
+  try {
+    const user = await UserModel.findOne({ cardId: cardId });
+
+    if (!user) {
+      console.log('Utilisateur introuvable pour la carte :', cardId);
+      return;
+    }
+
+    // Diffuser les données de l'utilisateur détecté au frontend via WebSocket
+    broadcastUserData(user);
+  } catch (err) {
+    console.error('Erreur lors du traitement de la carte :', err.message);
+  }
+});
 
 // Ajouter WebSocket au serveur existant
 app.server = app.listen(PORT, () => {
@@ -134,41 +161,6 @@ app.server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, (ws) => {
     wss.emit('connection', ws, request);
   });
-});
-
-parser.on('data', async (data) => {
-  // Nettoyage strict de l'UID (suppression des espaces et des caractères non voulus)
-  const cardId = data.replace(/[\r\n]/g, '').trim().replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-  console.log('Carte détectée (nettoyée) :', cardId);
-
-  try {
-    // Recherche d'un utilisateur avec le cardId nettoyé
-    const user = await UserModel.findOne({ cardId: cardId });
-
-    if (!user) {
-      console.log('Utilisateur introuvable pour la carte :', cardId);
-      return;
-    }
-
-    // Déterminer le statut (entrée ou sortie)
-    const lastPointage = await Pointage.findOne({ user_id: user._id }).sort({ date: -1 });
-    const status = lastPointage && lastPointage.status === 'entrée' ? 'sortie' : 'entrée';
-
-    // Création d'un nouvel enregistrement de pointage avec la date
-    const pointage = new Pointage({
-      user_id: user._id,
-      status,
-      date: new Date(), // Ajout de la date actuelle
-    });
-    await pointage.save();
-
-    console.log(`Pointage enregistré : ${status} pour ${user.nom} ${user.prenom}`);
-
-    // Envoyer les informations de l'utilisateur au frontend via WebSocket
-    broadcastUserData(user);
-  } catch (err) {
-    console.error('Erreur lors du traitement de la carte:', err.message);
-  }
 });
 
 // Route pour afficher tous les utilisateurs
