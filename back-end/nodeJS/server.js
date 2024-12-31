@@ -5,6 +5,9 @@ const dotenv = require('dotenv');
 const { SerialPort, ReadlineParser } = require('serialport');
 const WebSocket = require('ws'); // Importer WebSocket
 const routes = require('./routes/routes');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 dotenv.config();
 
@@ -19,6 +22,7 @@ const Pointage = require('./models/Pointage');
 app.use(express.json());
 app.use(cors());
 app.use('/api', routes);
+app.use('/uploads', express.static('uploads'));
 
 // Connexion à MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/pointage-system', {
@@ -53,14 +57,19 @@ const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
 // WebSocket Server
 const wss = new WebSocket.Server({ noServer: true });
 
-// Fonction pour envoyer les données via WebSocket
+// Fonction pour envoyer les données utilisateur avec l'URL de la photo via WebSocket
 const broadcastUserData = (user) => {
   wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({ user, status: 'Carte détectée' }));
+      client.send(JSON.stringify({
+        user,
+        photo: user.photo,  // Ajout de l'URL de la photo
+        status: 'Carte détectée',
+      }));
     }
   });
 };
+
 
 // Fonction pour enregistrer un pointage après validation
 const enregistrerPointage = async (user) => {
@@ -84,6 +93,16 @@ const enregistrerPointage = async (user) => {
     console.error('Erreur lors de l\'enregistrement du pointage :', err.message);
   }
 };
+// Spécifier le chemin du dossier où vous souhaitez stocker les photos
+const uploadDir = path.join(__dirname, 'uploads');
+
+// Vérifier si le dossier 'uploads' existe, sinon le créer
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true }); // 'recursive' crée aussi des sous-dossiers si nécessaire
+  console.log('Le dossier "uploads" a été créé');
+} else {
+  console.log('Le dossier "uploads" existe déjà');
+}
 
 // Gestion des données reçues via WebSocket
 wss.on('connection', (ws) => {
@@ -161,6 +180,33 @@ app.server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, (ws) => {
     wss.emit('connection', ws, request);
   });
+});
+// Configuration de multer pour stocker l'image
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');  // Dossier où les images seront stockées
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));  // Nom unique pour chaque fichier
+  }
+});
+
+const upload = multer({ storage });
+
+// Route pour télécharger l'image de l'utilisateur
+app.post('/upload-photo', upload.single('photo'), async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.body.userId);
+    if (user) {
+      user.photo = `/uploads/${req.file.filename}`;  // Stocker l'URL de l'image
+      await user.save();
+      res.json({ success: true, message: 'Photo téléchargée avec succès', photoUrl: user.photoUrl });
+    } else {
+      res.status(404).json({ success: false, message: 'Utilisateur introuvable' });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erreur serveur', error: err.message });
+  }
 });
 
 // Route pour afficher tous les utilisateurs
