@@ -12,7 +12,7 @@
     <main class="dashboard-main">
       <!-- Section image utilisateur -->
       <div class="user-image">
-        <img src="../../assets/user-image.png" alt="User Image">
+        <img *ngIf="users[0]?.photo" [src]="users[0]?.photo"  alt="User Image">
       </div>
   
       <!-- Informations utilisateur -->
@@ -31,10 +31,7 @@
             <span class="info-label">Nom:</span>
             <span class="info-value">{{ users[0]?.nom }}</span>
           </div>
-          <div class="info-row">
-            <span class="info-label">Statut:</span>
-            <span class="info-value">{{ users[0]?.status === 'actif' ? 'Actif' : 'Bloqué' }}</span>
-          </div>
+    
         </div>
       </div>
     </main>
@@ -45,10 +42,22 @@
         <app-door-access></app-door-access>
       </div>
   
+     <!-- Si l'utilisateur est bloqué, afficher le message "L'utilisateur a été bloqué" -->
+<div *ngIf="users[0]?.status === 'bloqué'; else actionButtons">
+  <div class="blocked-message">
+    <p class="blocked-text">L'utilisateur a été bloqué.</p>
+    <button class="btn btn-danger" (click)="goToDefaultDashboard()">Retour</button>
+  </div>
+</div>
+
+
+    <!-- Si l'utilisateur n'est pas bloqué, afficher les boutons "Valider" et "Rejeter" -->
+    <ng-template #actionButtons>
       <div class="validation-buttons">
         <button class="btn btn-custom" (click)="rejectAction()">Rejeter</button>
         <button class="btn btn-danger" (click)="validateAction()">Valider</button>
       </div>
+    </ng-template>
     </footer>
   </div>
 </div>

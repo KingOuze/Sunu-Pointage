@@ -53,6 +53,25 @@
   border-radius: 50%; /* Forme circulaire */
   border: 2px solid #bf202f; /* Bordure rouge */
 }
+.blocked-message {
+  display: flex; /* Utiliser Flexbox */
+  justify-content: center; /* Centrer les éléments horizontalement */
+  align-items: center; /* Centrer les éléments verticalement */
+  gap: 10px; /* Ajouter un espace entre le texte et le bouton */
+  font-size: large;
+}
+
+.blocked-text {
+  margin: 0; /* Enlever la marge par défaut du paragraphe */
+  font-size: 16px; /* Taille de la police du message */
+  color: #BF202F; /* Mettre le texte en rouge */
+}
+
+button.btn-danger {
+  padding: 10px 20px; /* Ajouter du padding au bouton pour l'agrandir */
+  font-size: 14px; /* Ajuster la taille de la police du bouton */
+}
+
 
 /* Ligne d'information */
 .info-row {
