@@ -12,7 +12,8 @@
     <main class="dashboard-main">
       <!-- Section image utilisateur -->
       <div class="user-image">
-        <img *ngIf="users[0]?.photo" [src]="users[0]?.photo"  alt="User Image">
+        <img *ngIf="users[0]?.photo" [src]="'http://localhost:3000' + users[0]?.photo" alt="User Image">
+
       </div>
   
       <!-- Informations utilisateur -->
