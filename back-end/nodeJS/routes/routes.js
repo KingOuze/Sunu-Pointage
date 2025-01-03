@@ -1,6 +1,6 @@
 const express = require('express');
 const usercontroller = require('../controllers/usercontroller');
-const pointagecontroller = require('../controllers/pointagecontroller');
+const { checkin, checkout } = require('../controllers/PointageUserController');
 
 const router = express.Router();
 
@@ -10,8 +10,9 @@ router.get('/users/:cardId', usercontroller.getUserByCardId);
 router.post('/users', usercontroller.createUser);
 router.delete('/users/:id', usercontroller.deleteUser);
 
-// Routes pour les pointages
-router.post('/pointages', pointagecontroller.addPointage);
-router.get('/pointages', pointagecontroller.getAllPointages);
+// Route pour le check-in
+router.post('/checkin', checkin);
 
+// Route pour le check-out
+router.post('/checkout', checkout);
 module.exports = router;

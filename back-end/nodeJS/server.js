@@ -9,6 +9,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+
 dotenv.config();
 
 const app = express();
@@ -16,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 // Import des modèles
 const UserModel = require('./models/User');
-const Pointage = require('./models/Pointage');
+const PointageUser = require('./models/PointageUser');
 
 // Middleware
 app.use(express.json());
@@ -71,28 +72,44 @@ const broadcastUserData = (user) => {
 };
 
 
-// Fonction pour enregistrer un pointage après validation
 const enregistrerPointage = async (user) => {
   try {
-    // Déterminer le statut (entrée ou sortie)
-    const lastPointage = await Pointage.findOne({ user_id: user._id }).sort({ date: -1 });
-    const status = lastPointage && lastPointage.status === 'entrée' ? 'sortie' : 'entrée';
+    const dateDebut = new Date();
+    dateDebut.setHours(0, 0, 0, 0); // Début de la journée
+    const dateFin = new Date();
+    dateFin.setHours(23, 59, 59, 999); // Fin de la journée
 
-    // Création d'un nouvel enregistrement de pointage avec la date
-    const pointage = new Pointage({
+    // Vérifie s'il y a déjà un pointage pour aujourd'hui
+    let pointage = await PointageUser.findOne({
       user_id: user._id,
-      status,
-      date: new Date(), // Ajouter la date actuelle
+      date: { $gte: dateDebut, $lte: dateFin },
     });
 
-    // Sauvegarder le pointage dans la base de données
-    await pointage.save();
-
-    console.log(`Pointage validé et enregistré : ${status} pour ${user.nom} ${user.prenom}`);
+    if (!pointage) {
+      // Si pas de pointage, crée un nouveau avec un check-in
+      pointage = new PointageUser({
+        user_id: user._id,
+        date: new Date(),
+        checkin: new Date(),
+      });
+      await pointage.save();
+      console.log(`Check-in enregistré pour ${user.nom} ${user.prenom}`);
+      return { success: true, message: 'Check-in enregistré', pointage };
+    } else {
+      // Si pointage existe, met à jour le check-out
+      pointage.checkout = new Date();
+      await pointage.save();
+      console.log(`Check-out enregistré pour ${user.nom} ${user.prenom}`);
+      return { success: true, message: 'Check-out enregistré', pointage };
+    }
   } catch (err) {
     console.error('Erreur lors de l\'enregistrement du pointage :', err.message);
+    return { success: false, message: 'Erreur lors de l\'enregistrement du pointage', error: err.message };
   }
 };
+
+
+
 // Spécifier le chemin du dossier où vous souhaitez stocker les photos
 const uploadDir = path.join(__dirname, 'uploads');
 
@@ -110,7 +127,7 @@ wss.on('connection', (ws) => {
 
   ws.on('message', async (message) => {
     try {
-      const { action, user } = JSON.parse(message); // Parse le message reçu
+      const { action, status, user } = JSON.parse(message); // Parse le message reçu
       // Gestion des commandes OPEN et CLOSE
       if (action === 'OPEN') {
         console.log('Commande reçue : OUVERTURE');
@@ -121,16 +138,10 @@ wss.on('connection', (ws) => {
       }
 
       // Validation du pointage
-      if (action === 'VALIDATE' && user) {
-        console.log('Validation du pointage pour', user.nom);
-        await enregistrerPointage(user); // Enregistrer le pointage après validation
-
-        // Diffuser un message au frontend pour indiquer la validation
-        ws.send(JSON.stringify({
-          success: true,
-          message: `Pointage validé pour ${user.nom} ${user.prenom}`,
-        }));
-      } else if (action === 'REJECT' && user) {
+      if (status === 'VALIDATE' && user) {
+        const result = await enregistrerPointage(user);
+        ws.send(JSON.stringify(result));
+      } else if (status === 'REJECT' && user) {
         console.log('Pointage rejeté pour', user.nom);
 
         // Diffuser un message au frontend pour indiquer le rejet
@@ -139,12 +150,13 @@ wss.on('connection', (ws) => {
           message: `Pointage rejeté pour ${user.nom} ${user.prenom}`,
         }));
       } else {
-        console.log('Commande inconnue ou utilisateur non spécifié :', action);
+        console.log('Commande inconnue ou utilisateur non spécifié :', action, status);
       }
     } catch (err) {
       console.error('Erreur lors de la gestion du message WebSocket :', err.message);
     }
   });
+  
 
   ws.on('close', () => {
     console.log('Un client est déconnecté');
