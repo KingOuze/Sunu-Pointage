@@ -70,7 +70,25 @@
   background: rgba(0, 0, 0, 0.7);
   z-index: 1050;
 }
+/* Conteneur pour l'icône */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0; /* Espacement autour de l'icône */
+}
 
+.icon-container i {
+  font-size: 50px; /* Taille de l'icône */
+  color: #BF202F; /* Couleur rouge */
+}
+/* Style pour centrer le texte */
+.centered-text {
+  text-align: center; /* Centre le texte */
+  margin-top: 10px; /* Espacement au-dessus du texte */
+  font-size: 16px; /* Ajustez la taille de la police si nécessaire */
+  color: #333; /* Couleur du texte */
+}
 /* Style du modal */
 .modal-dialog {
   display: flex;
@@ -80,15 +98,15 @@
 }
 
 .modal-content {
-  max-width: 400px; /* Ajustez la largeur pour un effet compact */
-  width: 90%;
+  max-width: 400px; /* Largeur maximale */
+  width: 90%; /* Conserve la largeur relative */
+  min-height: 300px; /* Augmentez la hauteur minimale selon vos besoins */
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   animation: fadeIn 0.3s ease;
 }
-
 /* En-tête du modal */
 .modal-header {
   background-color: #BF202F;
