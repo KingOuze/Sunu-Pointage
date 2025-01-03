@@ -118,7 +118,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       console.error('Aucun utilisateur trouvé pour l\'action de check-out');
     }
   }
-  
+  // Méthode pour fermer le modal
+  closeModal(): void {
+    this.goToDefaultDashboard();
+  }
   
   validateAction(): void {
     if (this.userExists && this.users.length > 0) {

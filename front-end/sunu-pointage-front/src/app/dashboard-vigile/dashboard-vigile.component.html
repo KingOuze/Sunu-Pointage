@@ -12,14 +12,13 @@
     <main class="dashboard-main">
       <!-- Section image utilisateur -->
       <div class="user-image">
-        <img *ngIf="users[0]?.photo" [src]="'http://localhost:3000' + users[0]?.photo" alt="User Image">
-
       </div>
   
       <!-- Informations utilisateur -->
       <div class="user-info-card">
         <h5>Informations de l'utilisateur</h5>
         <div class="user-info">
+          <img *ngIf="users[0]?.photo" [src]="'http://localhost:3000' + users[0]?.photo" alt="User Image">
           <div class="info-row">
             <span class="info-label">Matricule:</span>
             <span class="info-value">{{ users[0]?.matricule }}</span>
@@ -43,14 +42,27 @@
         <app-door-access></app-door-access>
       </div>
   
-     <!-- Si l'utilisateur est bloqué, afficher le message "L'utilisateur a été bloqué" -->
+  <!-- Si l'utilisateur est bloqué, afficher le message "L'utilisateur a été bloqué" -->
 <div *ngIf="users[0]?.status === 'bloqué'; else actionButtons">
-  <div class="blocked-message">
-    <p class="blocked-text">L'utilisateur a été bloqué.</p>
-    <button class="btn btn-danger" (click)="goToDefaultDashboard()">Retour</button>
+  <div class="modal-backdrop" tabindex="-1" role="dialog" aria-labelledby="blockedModalLabel" aria-hidden="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="blockedModalLabel">Informations</h5>
+          <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>L'utilisateur a été bloqué.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="goToDefaultDashboard()">Retour</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
 
     <!-- Si l'utilisateur n'est pas bloqué, afficher les boutons "Valider" et "Rejeter" -->
     <ng-template #actionButtons>
