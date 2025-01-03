@@ -7,12 +7,21 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
-  width: 200px;
-  height: 30px;
+  width: 250px;
+  height: 60px;
 }
 
 .date-block {
+  display: flex; /* Pour aligner l'icône avec le texte */
+  align-items: center;
   font-size: 1.5rem;
   color: #333;
   font-weight: bold;
+}
+
+.sun-icon {
+  color: #c0bcb4; /* Couleur jaune/orange pour le soleil */
+  margin-right: 8px; /* Espacement entre l'icône et le texte */
+  font-size: 1.5rem; /* Taille de l'icône */
+  vertical-align: middle;
 }

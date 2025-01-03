@@ -7,7 +7,7 @@
   padding-bottom: 40px; /* Ajouté pour espacer le footer */
 }
 .dashboard-title{
-  padding-left: 20%;
+  padding-left: 6%;
 }
 
 /* En-tête */
@@ -19,7 +19,7 @@
   padding: 15px 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 70px; ;
+  height: 70px; 
 }
 
 .logo-container {
@@ -70,6 +70,7 @@
 button.btn-danger {
   padding: 10px 20px; /* Ajouter du padding au bouton pour l'agrandir */
   font-size: 14px; /* Ajuster la taille de la police du bouton */
+  cursor: pointer; /* Changer le curseur en forme de main */
 }
 
 
