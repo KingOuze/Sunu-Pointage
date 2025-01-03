@@ -49,7 +49,7 @@ const afficherUtilisateurs = async () => {
 
 // Communication avec Arduino
 const port = new SerialPort({
-  path: '/dev/ttyUSB0', // Remplacez par le port série de votre Arduino
+  path: '/dev/ttyACM0', // Remplacez par le port série de votre Arduino
   baudRate: 9600,
 });
 
@@ -147,10 +147,11 @@ wss.on('connection', (ws) => {
         // Diffuser un message au frontend pour indiquer le rejet
         ws.send(JSON.stringify({
           success: true,
-          message: `Pointage rejeté pour ${user.nom} ${user.prenom}`,
+          message: `Pointage rejeté pour ${user.nom} action
+          action ${user.prenom}`,
         }));
       } else {
-        console.log('Commande inconnue ou utilisateur non spécifié :', action, status);
+        console.log('Commande inconnue ou utilisateur non spécifié :', action, );
       }
     } catch (err) {
       console.error('Erreur lors de la gestion du message WebSocket :', err.message);
