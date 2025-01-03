@@ -11,6 +11,8 @@ import { AttendanceListComponent } from './components/attendance-list/attendance
 import { GestionCartesComponent } from './components/gestion-cartes/gestion-cartes.component';
 import { AssignerCarteComponent } from './components/assigner-carte/assigner-carte.component';
 import { ConnexionComponent } from './connexion/connexion.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: '', redirectTo: '/connexion', pathMatch: 'full' },  // Redirection par défaut
   { path: 'dashboard', component: DashboardComponent },      // Route pour le dashboard
@@ -25,5 +27,7 @@ export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: 'gestion-cartes', component: GestionCartesComponent }, // Route pour la modification
   { path: 'assigner-carte', component: AssignerCarteComponent }, // Route pour la modification
   { path: 'connexion', component: ConnexionComponent }, // Route pour la modification
+  { path: 'forgot-password', component: ForgotPasswordComponent }, //mot de pass oublié
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
 
 ];

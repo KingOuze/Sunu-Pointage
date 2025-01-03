@@ -1,38 +1,60 @@
 <div class="container">
-    <!-- Zone gauche avec image de fond -->
-    <div class="left" style="background-image: url('assets/connexion.png'); background-size: cover; background-position: center;">
-        <h1 style="color: white; font-size: 20px;">Votre système automatique pour la gestion de présences sécurisé et fiable</h1>
+  <div class="left" style="background-image: url('assets/connexion.png'); background-size: cover; background-position: center;">
+    <h1 style="color: white; font-size: 20px;">Votre système automatique pour la gestion de présences sécurisé et fiable</h1>
+  </div>
 
-     
+  <div class="right">
+    <div class="logo">
+      <img src="assets/image.png" alt="Logo" />
+      <h2>Connexion</h2>
     </div>
-  
-    <!-- Zone droite avec le formulaire -->
-    <div class="right">
-      <div class="logo">
-        <img src="assets/image.png" alt="Logo" />
-        <h2>Connexion</h2>
+
+    <!-- Affichage des messages d'erreur -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="onLogin($event)">
+      <label for="email">Email*</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Entrez votre email"
+        required
+        [(ngModel)]="email"
+        name="email"
+        [ngClass]="{ 'invalid': emailInvalid }"
+        (ngModelChange)="emailInvalid = !isValidEmail(email)"
+      />
+      <div *ngIf="emailInvalid" class="invalid-message">
+        L'email n'est pas valide.
       </div>
-      <form>
-        <label for="email">Email*</label>
-        <input type="email" id="email" placeholder="Enter l'email" required />
-  
-        <label for="password">Mot de passe*</label>
-        <div class="password-wrapper">
-          <input
-            type="{{ isPasswordVisible ? 'text' : 'password' }}"
-            id="password"
-            placeholder="Enter le mot de passe"
-            required
-          />
-          <span class="toggle-password" (click)="togglePasswordVisibility()">
-            👁
-          </span>
-        </div>
-  
-        <a href="#">Mot de passe oublié</a>
-        <button type="submit" class="button" (click)="onLogin()">Se connecter</button>
-      </form>
-      <button class="validate-card">Valider avec sa carte</button>
+
+      <label for="password">Mot de passe*</label>
+      <div class="password-wrapper">
+        <input
+          type="{{ isPasswordVisible ? 'text' : 'password' }}"
+          id="password"
+          placeholder="Entrez votre mot de passe"
+          required [(ngModel)]="password" name="password"
+        />
+        <span class="toggle-password" (click)="togglePasswordVisibility()">👁</span>
+      </div>
+
+      <!-- Affichage du message si le mot de passe ne correspond pas à l'email -->
+      <div *ngIf="passwordMismatch" class="invalid-message">
+        Le mot de passe ne correspond pas à l'email.
+      </div>
+
+      <a href="#">Mot de passe oublié</a>
+
+      <!-- Bouton de connexion -->
+      <button type="submit" class="button">Se connecter</button>
+    </form>
+
+    <!-- Option de connexion par carte RFID -->
+    <div>
+      <button (click)="onCardLogin()" class="button">Se connecter avec la carte RFID</button>
     </div>
   </div>
-  
+</div>
