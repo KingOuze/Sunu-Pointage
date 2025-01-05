@@ -54,6 +54,29 @@ const port = new SerialPort({
 });
 
 const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
+// Fonction pour vérifier l'utilisateur dans la base de données
+const verifyUser = async (cardId) => {
+  try {
+    const user = await UserModel.findOne({ cardId: cardId });
+
+    if (!user) {
+      console.log('Utilisateur introuvable');
+      return 'CARD_NOT_FOUND'; // Carte non trouvée
+    }
+
+    if (user.status === 'bloqué') {
+      console.log('Utilisateur bloqué');
+      return 'USER_BLOCKED'; // Utilisateur bloqué
+    }
+
+    console.log('Utilisateur trouvé', user.nom);
+    return 'USER_VALID'; // Utilisateur valide
+  } catch (err) {
+    console.error('Erreur lors de la recherche de l\'utilisateur:', err.message);
+    return 'ERROR';
+  }
+};
+
 
 // WebSocket Server
 const wss = new WebSocket.Server({ noServer: true });
@@ -170,17 +193,32 @@ parser.on('data', async (data) => {
   console.log('Carte détectée (nettoyée) :', cardId);
 
   try {
+    // Chercher l'utilisateur dans la base de données à partir de l'ID de la carte
     const user = await UserModel.findOne({ cardId: cardId });
 
     if (!user) {
       console.log('Utilisateur introuvable pour la carte :', cardId);
+      // Répondre à l'Arduino avec "NOT_FOUND"
+      port.write('NOT_FOUND\n');
       return;
+    }
+
+    if (user.status === 'bloqué') {
+      console.log('Accès refusé, utilisateur bloqué :', user.nom);
+      // Répondre à l'Arduino avec "BLOCKED"
+      port.write('BLOCKED\n');
+    } else {
+      console.log('Accès autorisé pour :', user.nom);
+      // Répondre à l'Arduino avec "AUTHORIZED"
+      port.write('AUTHORIZED\n');
     }
 
     // Diffuser les données de l'utilisateur détecté au frontend via WebSocket
     broadcastUserData(user);
   } catch (err) {
     console.error('Erreur lors du traitement de la carte :', err.message);
+    // Répondre à l'Arduino avec une erreur
+    port.write('ERROR\n');
   }
 });
 

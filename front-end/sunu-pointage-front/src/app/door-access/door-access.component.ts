@@ -10,19 +10,22 @@ import { WebSocketService } from '../websocket.service';
 export class DoorAccessComponent {
   isDoorOpen: boolean = false; // État de la porte
   errorMessage: string | null = null; // Message d'erreur en cas d'accès refusé
+  userStatus: string = ''; // Statut de l'utilisateur
 
   constructor(private webSocketService: WebSocketService) {
     // Connexion WebSocket et gestion des messages reçus
     this.webSocketService.connect().subscribe((message) => {
       console.log('Message reçu du WebSocket:', message);
 
-      // Vérification si l'utilisateur est bloqué ou n'existe pas
+      // Vérification du statut de l'utilisateur (bloqué ou accès refusé)
       if (message.success === false) {
         // L'utilisateur est soit bloqué, soit inexistant
         this.errorMessage = message.message; // Affiche le message d'erreur
         this.isDoorOpen = false;  // La porte reste fermée si l'accès est refusé
+        this.userStatus = 'bloqué'; // Statut de l'utilisateur : bloqué
       } else {
-        this.errorMessage = null;
+        this.errorMessage = null; // Réinitialisation du message d'erreur
+        this.userStatus = 'actif'; // Statut de l'utilisateur : actif
       }
     });
   }
