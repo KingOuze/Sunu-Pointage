@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,9 +18,10 @@ import { Component } from '@angular/core';
       </ul>
       <!-- Déplacer le lien de déconnexion ici -->
       <ul class="logout">
-        <li><a href="#"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
+        <li><a href="/connexion" (click)="logout()"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
       </ul>
     </nav>
+    
   `,
   styles: [`
     /* Style principal du sidebar */
@@ -94,4 +96,11 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class SidebarComponent {}
+
+export class SidebarComponent {
+  constructor(private authService: AuthService) {}
+
+  logout(): void {
+    this.authService.logout(); // Appelle la méthode de déconnexion
+  }
+}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';  // Importer RouterOutlet
 import { FormsModule } from '@angular/forms'; // Importer FormsModule
+
 @Component({
   selector: 'app-root',
   standalone: true,
