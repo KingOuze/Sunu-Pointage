@@ -12,6 +12,7 @@
           <thead>
             <tr>
               <th><input type="checkbox" /></th>
+              <th>Photo</th>
               <th>Prénom et nom</th>
               <th>État de la carte</th>
               <th>Email</th>
@@ -21,29 +22,36 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of users">
-              <td><input type="checkbox" /></td>
-              <td>{{ user.nom }}</td>
-              <td *ngIf="user.etat == 'active'">
-                <span style="color: green;">{{ user.etat}}</span>
-              </td>
-              <td *ngIf="user.etat == 'inactive'">
-                <span style="color: rgb(146, 21, 21);">{{ user.etat}}</span>
-              </td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.telephone }}</td>
-              <td>
-                <button class="assign-button" [routerLink]="['/assigner-carte', user._id]">
-                  Assigner
-                </button>
-              </td>
-              
-              <td>
-                <button class="delete-button">
-                  <span>&#x2716;</span>
-                </button>
-              </td>
-            </tr>
+            <ng-container *ngFor="let user of users">
+              <tr *ngIf="user.role !== 'vigile'">
+                <td><input type="checkbox" /></td>
+                <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
+                <td>{{user.prenom }} {{ user.nom }}</td>
+                <td>
+                  <span *ngIf="user.etat == 'active'" style="color: green;">{{ user.etat }}</span>
+                  <span *ngIf="user.etat == 'inactive'" style="color: rgb(146, 21, 21);">{{ user.etat }}</span>
+                </td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.telephone }}</td>
+                <td *ngIf="user.cardId == null">
+                  <button class="assign-button" [routerLink]="['/assigner-carte', user._id]">
+                    Assigner
+                  </button>
+                </td>
+                <td *ngIf="user.cardId != null">
+                  {{ user.cardId }}
+                </td>
+                <td *ngIf="user.cardId != null ">
+                  <button class="delete-button" (click)="deleteAssign(user._id)">
+                    <span>&#x2716;</span>
+                  </button>
+                </td>
+                <td *ngIf="user.cardId == null">
+                  Aucune
+                </td>
+              </tr>
+            </ng-container>
+            
           </tbody>
         </table>
       </div>

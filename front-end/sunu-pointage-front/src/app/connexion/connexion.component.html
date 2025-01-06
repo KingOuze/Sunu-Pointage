@@ -1,5 +1,4 @@
 <div class="login-container">
-  <h2>Connexion</h2>
 
   <!-- Connexion par email et mot de passe -->
   <div class="container">
@@ -43,11 +42,11 @@
             required
             [(ngModel)]="password"
             name="password"
-            input/>
+            />
           <span class="toggle-password" (click)="togglePasswordVisibility()">👁</span>
         </div>
         <!-- Message d'erreur pour le mot de passe -->
-        <div *ngIf="password.length < 8" class="error-message">
+        <div *ngIf="password.length < 8 && password.length > 0 " class="error-message">
           Le mot de passe doit contenir au moins 8 caractères.
         </div>
     

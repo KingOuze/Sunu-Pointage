@@ -47,6 +47,17 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/users/cohorte/${cohorteId}`);
   }
 
+  //Assigner un carte RFID a un user
+  assignCard(userId: String, cardId: String): Observable<any>{
+    console.log(cardId)
+    return this.http.post(`${this.baseUrl}/users/card/${userId}`, { cardId: cardId } );
+  }
+
+  //supprimer l'assignation de la carte
+  deleteCard(id: String): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/users/card/${id}`);
+  }
+
   // Supprimer un utilisateur par ID
   deleteUser(id: String): Observable<any> {
     return this.http.delete(`${this.baseUrl}/users/${id}`);

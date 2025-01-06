@@ -24,7 +24,7 @@ export class ListeaprenantComponent {
   learners: User[] = [];
   selectedFile: File | undefined;
   currentPage: number = 1; // Page actuelle
-  filteredUsers =  [...this.learners];
+  //filteredUsers =  [...this.learners];
  
   
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private userFilterService: UserFilterService) {}
@@ -42,11 +42,11 @@ export class ListeaprenantComponent {
     });
     this.loadUsersByCohorte(this.cohorteId);
 
-    this.userFilterService.searchTerm$.subscribe((term) => {
+    /*this.userFilterService.searchTerm$.subscribe((term) => {
       this.filteredUsers = this.learners.filter((learner) =>
         learner.nom.toLowerCase().includes(term.toLowerCase())
       );
-    });
+    });*/
   }
 
   loadUsersByCohorte(cohorteId: String): void {

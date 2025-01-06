@@ -39,4 +39,41 @@ export class GestionCartesComponent {
       }
     });
   }
+
+  deleteAssign(id: string): void {
+    Swal.fire({
+      title: 'Etes-vous sur?',
+      text: "Cette action supprimera la carte assignée à ce dernier.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer!'
+    }).then((result) => {
+      if(result){
+        this.userService.deleteCard(id).subscribe({
+          next: (res) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Supprimé!',
+              text: 'L\'assignation de la carte a été supprimé avec succès.',
+              showConfirmButton: false,
+              timer: 1500
+          });
+          this.loadUsers();
+  
+        }, error: (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Erreur lors de la suppression de la carte',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      })
+      }
+  
+    })
+ }
 }

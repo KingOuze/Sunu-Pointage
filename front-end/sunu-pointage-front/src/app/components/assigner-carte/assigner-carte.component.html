@@ -4,7 +4,7 @@
     <div class="form-container">
       <div class="form-group">
         <label for="card-number">Numéro de la carte</label>
-        <input type="text" id="card-number" placeholder="Entrez le numéro de la carte" />
+        <input type="text" id="card-number" placeholder="Scanner la carte" [value]="cardId" readonly/>
       </div>
   
       <div class="form-group">
@@ -17,7 +17,7 @@
     </div>
   
     <div class="buttons-container">
-      <button class="validate-button">Valider</button>
+      <button class="validate-button" (click)="assigneCard()">Valider</button>
       <button class="return-button" (click)="goBack()">Retour</button>
 
     </div>
