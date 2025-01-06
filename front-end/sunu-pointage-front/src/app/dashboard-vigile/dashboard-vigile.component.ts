@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ClockComponent } from '../clock/clock.component';
 import { DoorAccessComponent } from '../door-access/door-access.component';
+import { Router } from '@angular/router'; // Importer Router
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   errorMessage: string = ''; // Pour afficher les messages d'erreur métier
   private unsubscribe$ = new Subject<void>(); // Pour gérer les désabonnements
 
-  constructor(private webSocketService: WebSocketService, private cdr: ChangeDetectorRef) {}
+  constructor(private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,private router: Router) {}
 
   ngOnInit(): void {
     // Connexion au WebSocket et réception des données en temps réel
@@ -86,7 +87,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges(); // Détecter manuellement les changements
     }, 100); // Ajouter un léger délai pour permettre au template de se mettre à jour correctement
   }
-
+  
+// Méthode pour naviguer vers l'historique des pointages
+goToHistoriquePointage() {
+  this.router.navigateByUrl('/historique-pointage');
+}
   checkinAction(): void {
     if (this.userExists) {
       console.log('Utilisateur trouvé:', this.users[0]); // Vérifiez les données de l'utilisateur

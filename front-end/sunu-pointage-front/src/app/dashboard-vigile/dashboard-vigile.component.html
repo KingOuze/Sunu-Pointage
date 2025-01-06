@@ -35,13 +35,14 @@
         </div>
       </div>
     </main>
+    
   
     <!-- Footer -->
     <footer class="dashboard-footer">
       <div class="door-access-section">
         <app-door-access></app-door-access>
       </div>
-  
+ 
  <!-- Si l'utilisateur est bloqué, afficher le message "L'utilisateur a été bloqué" -->
 <div *ngIf="users[0]?.status === 'bloqué'; else actionButtons">
   <div class="modal-backdrop" tabindex="-1" role="dialog" aria-labelledby="blockedModalLabel" aria-hidden="false">

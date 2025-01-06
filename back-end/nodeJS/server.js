@@ -9,7 +9,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-
 dotenv.config();
 
 const app = express();
@@ -18,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 // Import des modèles
 const UserModel = require('./models/User');
 const PointageUser = require('./models/PointageUser');
+const User = require('./models/User');
 
 // Middleware
 app.use(express.json());
@@ -77,7 +77,6 @@ const verifyUser = async (cardId) => {
   }
 };
 
-
 // WebSocket Server
 const wss = new WebSocket.Server({ noServer: true });
 
@@ -93,7 +92,6 @@ const broadcastUserData = (user) => {
     }
   });
 };
-
 
 const enregistrerPointage = async (user) => {
   try {
@@ -130,8 +128,6 @@ const enregistrerPointage = async (user) => {
     return { success: false, message: 'Erreur lors de l\'enregistrement du pointage', error: err.message };
   }
 };
-
-
 
 // Spécifier le chemin du dossier où vous souhaitez stocker les photos
 const uploadDir = path.join(__dirname, 'uploads');
@@ -180,7 +176,6 @@ wss.on('connection', (ws) => {
       console.error('Erreur lors de la gestion du message WebSocket :', err.message);
     }
   });
-  
 
   ws.on('close', () => {
     console.log('Un client est déconnecté');
@@ -232,6 +227,7 @@ app.server.on('upgrade', (request, socket, head) => {
     wss.emit('connection', ws, request);
   });
 });
+
 // Configuration de multer pour stocker l'image
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -251,7 +247,7 @@ app.post('/upload-photo', upload.single('photo'), async (req, res) => {
     if (user) {
       user.photo = `/uploads/${req.file.filename}`;  // Stocker l'URL de l'image
       await user.save();
-      res.json({ success: true, message: 'Photo téléchargée avec succès', photoUrl: user.photoUrl });
+      res.json({ success: true, message: 'Photo téléchargée avec succès', photoUrl: user.photo });
     } else {
       res.status(404).json({ success: false, message: 'Utilisateur introuvable' });
     }
@@ -271,3 +267,72 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ success: false, message: 'Erreur serveur', error: err.message });
   }
 });
+
+// Route pour récupérer l'historique de tous les pointages
+app.get('/historique-pointage', async (req, res) => {
+  try {
+    const historique = await PointageUser.find().sort({ date: -1 }).populate('user_id', 'nom prenom matricule'); // Populate pour inclure nom et prénom
+
+    if (!historique.length) {
+      return res.status(404).json({ success: false, message: 'Aucun historique de pointage trouvé.' });
+    }
+
+    res.json({ success: true, historique });
+  } catch (err) {
+    console.error('Erreur lors de la récupération de l\'historique des pointages:', err.message);
+    res.status(500).json({ success: false, message: 'Erreur serveur', error: err.message });
+  }
+});
+
+
+app.get('/id', async(req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.find({ _Id: userId });
+
+    if(!user){
+      return res.status(404).json({ success: false, message: 'Aucun historique de pointage trouvé' });
+    }
+    res.json({ success: true, user });
+  } catch (error) {
+    console.error('Erreur lors de la récupération du user:', err.message);
+    res.status(500).json({ success: false, message: 'Erreur serveur', error: err.message });
+  }
+})  
+app.put('/update-pointage/:id', async (req, res) => {
+  const { etat } = req.body;  // Récupérer l'état envoyé par l'utilisateur
+  const pointageId = req.params.id;  // ID du document à mettre à jour
+  
+  try {
+    // Vérifier si l'état est fourni
+    if (!etat) {
+      return res.status(400).json({ success: false, message: 'L\'état est requis pour la mise à jour' });
+    }
+
+    // Mettre à jour uniquement le champ `etat`
+    const result = await PointageUser.updateOne(
+      { _id: pointageId },  // Recherche du pointage par ID
+      { $set: { etat: etat } }  // Mise à jour du champ `etat`
+    );
+
+    // Vérifier si la mise à jour a été effectuée
+    if (result.nModified === 0) {
+      return res.status(404).json({ success: false, message: 'Aucun pointage mis à jour' });
+    }
+
+    // Récupérer le pointage mis à jour
+    const updatedPointage = await PointageUser.findById(pointageId);
+
+    // Réponse succès avec le pointage mis à jour
+    res.json({ success: true, message: 'État mis à jour avec succès', pointage: updatedPointage });
+  } catch (err) {
+    console.error('Erreur lors de la mise à jour de l\'état', err);
+    res.status(500).json({ success: false, message: 'Erreur serveur', error: err.message });
+  }
+});
+
+
+
+
+
+
