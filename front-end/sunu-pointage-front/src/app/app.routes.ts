@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+<<<<<<< HEAD
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LearnersComponent } from './components/learners/learners.component'; // Gestion des employés
 import { InscriptionComponent } from './components/inscription/inscription.component'; // Assurez-vous du chemin correct
@@ -34,3 +35,13 @@ export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: 'modifier-autre/:name/:id', component: ModifierAutreComponent }, // Redirection vers la page de connexion si une route inexistante est utilisée
   { path: 'cohortes', component: CohorteComponent }, // Redirection to cohorte component
 ];
+=======
+import { DashboardComponent } from './dashboard-vigile/dashboard-vigile.component';
+
+export const routes: Routes = [
+
+    { path: '', redirectTo: '/dashboard-vigile', pathMatch: 'full' },
+    { path: 'dashboard-vigile', component: DashboardComponent },
+    { path: 'dashboard-pointage', component: DashboardComponent },
+];
+>>>>>>> fdcb699f818d01d9d249250c03d2053d1373342e

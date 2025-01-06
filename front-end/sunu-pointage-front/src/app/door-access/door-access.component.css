@@ -1,0 +1,40 @@
+/* Centrage du bouton */
+.text-center {
+  text-align: center;
+}
+
+/* Style commun aux boutons */
+.btn {
+  font-size: 1.2rem; /* Taille de police de base */
+  padding: 10px 20px; /* Espacement intérieur */
+  border: 2px solid transparent; /* Bordures par défaut */
+  border-radius: 4px; /* Bords légèrement arrondis */
+  font-weight: bold; /* Texte en gras */
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+  cursor: pointer; /* Curseur pointeur */
+  width: 100%; /* Prend toute la largeur sur petits écrans */
+  max-width: 300px; /* Largeur maximale pour les grands écrans */
+  margin: 10px auto; /* Centre le bouton et ajoute un espace externe */
+}
+
+/* Style pour le bouton d'ouverture */
+.btn-secondary {
+  background-color: white; /* Fond blanc */
+  color: #BF202F; /* Texte rouge */
+  border-color: #BF202F; /* Bordure rouge */
+}
+
+/* Style pour le bouton de fermeture */
+.btn-danger {
+  background-color: #BF202F; /* Fond rouge */
+  color: white; /* Texte blanc */
+  border-color: #BF202F; /* Bordure rouge */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .btn {
+    font-size: 1rem; /* Réduit la taille de la police sur petits écrans */
+    padding: 8px 15px; /* Réduit l'espacement intérieur */
+  }
+}
