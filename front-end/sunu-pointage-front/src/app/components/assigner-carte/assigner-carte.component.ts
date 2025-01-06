@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 export class AssignerCarteComponent {
   constructor(private router: Router) {}
 
+  
+
   // Méthode pour gérer le retour
   goBack(): void {
     this.router.navigate(['/gestion-cartes']);

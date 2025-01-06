@@ -16,13 +16,11 @@
             id="file-upload"
             (change)="onFileUpload($event)"
             hidden
+            accept=".csv, .txt" required
           />
-          <button class="add-btn">
+          <button class="add-btn" (click)="addEmploye()">
             <i class="bi bi-plus-circle"></i>
-            <a href="/inscription" style="text-decoration: none; color: inherit;">
-              Ajouter Employé
-            </a>
-          
+              Ajouter Employé          
           </button>
         </div>
       </div>
@@ -30,31 +28,42 @@
       <!-- Tableau des apprenants -->
       <div class="table-container">
         <h2>Liste des employés</h2>
-        <table class="learners-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nom</th>
-              <th>Catégorie</th>
-              <th>Email</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let learner of learners; let i = index">
-              <td>{{ i + 1 }}</td>
-              <td>{{ learner.name }}</td>
-              <td>{{ learner.category }}</td>
-              <td>{{ learner.email }}</td>
-              <td>
-                <a [routerLink]="['/modification', learner.id]" style="text-decoration: none; color: inherit;">
-                    <i class="bi bi-pencil edit-icon"></i>
-                  </a>
-                <i class="bi bi-trash delete-icon"></i>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <form (ngSubmit)="onDeleteSelected()">
+          <table class="learners-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Photo</th>
+                <th>Matricule</th>
+                <th>Prenom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let learner of learners">
+                <td><input type="checkbox" [(ngModel)]="learner.selected" name="user-{{learner._id}}" (change)="updateSelection(learner)"></td>
+                <td>
+                  <img [src]="learner.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;" />
+                </td>
+                <td>{{ learner.matricule }}</td>
+                <td>{{ learner.prenom }}</td>
+                <td>{{ learner.nom }}</td>
+                <td>{{ learner.email }}</td>
+                <td>
+                  <a [routerLink]="['/modification',departementId , learner._id]" style="text-decoration: none; color: inherit;">
+                      <i class="bi bi-pencil edit-icon"></i>
+                    </a>
+                  <i class="bi bi-trash delete-icon" (click)="deleteUser(learner._id)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          <br>
+          <button type="submit" *ngIf="hasSelected()" style="background-color: white; color: rgb(139, 22, 22);">Supprimer Sélectionnés</button>
+        </form>
       </div>
   
       <!-- Pagination -->
@@ -66,3 +75,4 @@
     </div>
   </div>
   
+

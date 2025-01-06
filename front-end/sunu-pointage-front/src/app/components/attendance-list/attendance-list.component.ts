@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'; // Importez RouterModule ici
 import { FormsModule } from '@angular/forms'; // Importer FormsModule
 import { FilterPipe } from '../pipes/filter.pipes';
 

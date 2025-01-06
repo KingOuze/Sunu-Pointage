@@ -1,0 +1,53 @@
+.layout {
+    display: flex;
+  }
+
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  /* Style pour la carte de la date actuelle */
+  .date-card {
+    grid-column: span 2; /* Fait en sorte qu'elle occupe deux colonnes */
+    background-color: #e9f7ef; /* Couleur de fond différente pour la visibilité */
+    border: 2px solid #28a745; /* Bordure pour la mettre en valeur */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Ombre pour un effet de profondeur */
+    font-weight: bold; /* Texte en gras pour la mettre en avant */
+  }
+
+  /* Style pour la carte StatCard */
+  .stats app-stat-card {
+    transition: all 0.3s ease;
+  }
+
+  /* Effet de survol pour les cartes */
+  .stats app-stat-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+
+  /* Style pour la barre de recherche */
+  .search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 600px;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }

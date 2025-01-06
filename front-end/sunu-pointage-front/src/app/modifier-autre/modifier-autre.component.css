@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  .modification-container {
+    max-width: 1000px; /* Largeur maximale */
+    
+    margin: 50px auto;
+    padding: 80px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: center;
+    color: #BF202F;
+  }
+  
+  .subtitle {
+    text-align: center;
+    color: #777;
+  }
+  
+  .form-row {
+    display: flex; /* Utilisation de Flexbox pour la disposition */
+    justify-content: space-between; /* Espacement entre les éléments */
+    margin-bottom: 15px; /* Espacement entre les lignes */
+  }
+  
+  .form-group {
+    flex: 1; /* Chaque groupe de formulaire prend un espace égal */
+    margin-right: 10px; /* Espacement entre les groupes */
+  }
+  
+  .form-group:last-child {
+    margin-right: 0; /* Pas d'espacement à droite pour le dernier élément */
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="file"],
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Pour inclure le padding dans la largeur */
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.3s;
+  }
+  
+  .modifier {
+    background-color: #BF202F; /* Vert */
+  }
+  
+  .modifier:hover {
+    background-color: #BF202F; /* Vert foncé */
+  }
+  
+  .retour {
+    background-color: #5B5656; /* Rouge */
+  }
+  
+  .retour:hover {
+    background-color: #5B5657; /* Rouge foncé */
+  }

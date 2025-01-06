@@ -1,1 +1,34 @@
-<p>dashboard works!</p>
+<div class="layout">
+    <app-sidebar></app-sidebar>
+    <div class="content">
+      <!-- Barre de recherche en haut du dashboard -->
+      <div class="search-container">
+        <input 
+          type="search" 
+          [(ngModel)]="searchQuery" 
+          class="search-bar" 
+          (input)="onInputChange($event)"/>
+      </div>
+
+      <!-- Section des statistiques -->
+      <div class="stats">
+        <!-- Carte pour afficher la date actuelle, placée en premier -->
+        <app-stat-card 
+          title="Date Actuelle" 
+          [value]="currentDate" 
+          iconClass="bi-calendar" 
+          iconColor="#28a745" 
+          class="date-card">
+        </app-stat-card>
+
+        <app-stat-card title="Total Employees" [value]="countEmployes.toString()"  iconClass="bi-people" iconColor="#BF202F"></app-stat-card>
+        <app-stat-card title="Total Apprenants" [value]="countEtudiant.toString()" iconClass="bi-person" iconColor="#BF202F"></app-stat-card>
+        <app-stat-card title="Absents" value="50" iconClass="bi-exclamation-circle" iconColor="#BF202F"></app-stat-card>
+        <app-stat-card title="Total Retards" value="12" iconClass="bi-clock" iconColor="#BF202F"></app-stat-card>
+        <app-stat-card title="Total Pointés" value="50" iconClass="bi-check-circle" iconColor="#BF202F"></app-stat-card>
+      </div>
+
+      <!-- Graphique des pointages -->
+      <app-attendance-chart></app-attendance-chart>
+    </div>
+  </div>

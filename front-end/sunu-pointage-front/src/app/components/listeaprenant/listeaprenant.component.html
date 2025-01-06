@@ -16,10 +16,11 @@
             id="file-upload"
             (change)="onFileUpload($event)"
             hidden
+            accept=".csv, .txt" required
           />
           <button class="add-btn">
             <i class="bi bi-plus-circle"></i>
-            <a href="/apprenant" style="text-decoration: none; color: inherit;">
+            <a [routerLink]="['/apprenant', cohorteId]" style="text-decoration: none; color: inherit;">
               Ajouter Apprenant
             </a>
           
@@ -30,39 +31,53 @@
       <!-- Tableau des apprenants -->
       <div class="table-container">
         <h2>Liste des apprenants</h2>
-        <table class="learners-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nom</th>
-              <th>Catégorie</th>
-              <th>Email</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let learner of learners; let i = index">
-              <td>{{ i + 1 }}</td>
-              <td>{{ learner.name }}</td>
-              <td>{{ learner.category }}</td>
-              <td>{{ learner.email }}</td>
-              <td>
-                <a [routerLink]="['/modification', learner.id]" style="text-decoration: none; color: inherit;">
-                    <i class="bi bi-pencil edit-icon"></i>
-                  </a>
-                <i class="bi bi-trash delete-icon"></i>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <form (ngSubmit)="onDeleteSelected()">
+          <table class="learners-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Photo</th>
+                <th>Matricule</th>
+                <th>Prenom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            
+            <tbody *ngIf="learners != null">
+              <tr *ngFor="let learner of learners paginate: { itemsPerPage: 5, currentPage: currentPage }">
+                <td><input type="checkbox" [(ngModel)]="learner.selected" name="user-{{learner._id}}" (change)="updateSelection(learner)"></td>
+                <td><img [src]="learner.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
+                <td>{{ learner.matricule }}</td>
+                <td>{{ learner.prenom }}</td>
+                <td>{{ learner.nom }}</td>
+                <td>{{ learner.email }}</td>
+                <td>
+                  <a [routerLink]="['/modification', cohorteId , learner._id]" style="text-decoration: none; color: inherit;">
+                      <i class="bi bi-pencil edit-icon"></i>
+                    </a>
+                    <i class="bi bi-trash delete-icon" (click)="deleteUser(learner._id)" ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          <br>
+          <button type="submit" *ngIf="hasSelected()" style="background-color: white; color: rgb(139, 22, 22);" >Supprimer Sélectionnés</button>
+        
+        </form>
       </div>
-  
+      <!-- Message si aucun utilisateur n'est trouvé -->
+      <div *ngIf="learners.length === 0">
+        <p>Aucun utilisateur trouvé.</p>
+      </div>
       <!-- Pagination -->
-      <div class="pagination">
-        <button>&lt;</button>
-        <span>1</span>
-        <button>&gt;</button>
-      </div>
-    </div>
+      <pagination-controls
+        (pageChange)="currentPage = $event"
+        previousLabel="&laquo; Précédent"
+        nextLabel="Suivant &raquo;"
+        class="pagination"
+      ></pagination-controls>
   </div>
   

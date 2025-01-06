@@ -20,8 +20,8 @@
           />
           <button class="add-btn">
             <i class="bi bi-plus-circle"></i>
-            <a [routerLink]="['/ajouter', 'departement']" style="text-decoration: none; color: inherit;">
-              Ajouter un departement
+            <a [routerLink]="['/ajouter', 'cohorte']" style="text-decoration: none; color: inherit;">
+              Ajouter une Cohorte
             </a>
           
           </button>
@@ -30,28 +30,28 @@
   
       <!-- Tableau des apprenants -->
       <div class="table-container">
-        <h2>Liste des departements</h2>
+        <h2>Liste des Cohortes</h2>
         <table class="learners-table">
           <thead>
             <tr>
               <th>id</th>
-              <th>departement</th>
+              <th>Cohortes</th>
               <th>Description</th>
               <th>Membres</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let departement of filteredDepartement; let i = index; ">
-              <td (click)="onItemClick(departement)">{{ i + 1 }}</td>
-              <td (click)="onItemClick(departement)" >{{ departement.nom }}</td>
-              <td (click)="onItemClick(departement)"></td>
-              <td (click)="onItemClick(departement)">{{ departmentCounts[departement._id] || 0}} membre(s)</td>
+            <tr *ngFor="let cohorte of filteredCohorte; let i = index; ">
+              <td (click)="onItemClick(cohorte)">{{ i + 1 }}</td>
+              <td (click)="onItemClick(cohorte)" >{{ cohorte.nom }}</td>
+              <td (click)="onItemClick(cohorte)"></td>
+              <td (click)="onItemClick(cohorte)">{{ cohorteCounts[cohorte._id] || 0}} membre(s)</td>
               <td>
-                <a [routerLink]="['/modifier-autre', 'departement', departement._id]" style="text-decoration: none; color: inherit;">
+                <a [routerLink]="['/modifier-autre','cohorte', cohorte._id]" style="text-decoration: none; color: inherit;">
                     <i class="bi bi-pencil edit-icon"></i>
                   </a>
-                  <i class="bi bi-trash delete-icon" (click)="deleteDepartement(departement._id)"></i>
+                  <i class="bi bi-trash delete-icon" (click)="deleteCohorte(cohorte._id)"></i>
               </td>
             </tr>
           </tbody>

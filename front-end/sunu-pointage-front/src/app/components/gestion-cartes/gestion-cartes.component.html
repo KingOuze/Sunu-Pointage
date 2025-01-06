@@ -3,7 +3,7 @@
   
     <div class="content">
       <div class="header">
-        <h2>Membres</h2>
+        <h2>Listes des Utilisateurs</h2>
         <input type="text" placeholder="Rechercher..." class="search-bar" />
       </div>
   
@@ -14,25 +14,26 @@
               <th><input type="checkbox" /></th>
               <th>Prénom et nom</th>
               <th>État de la carte</th>
-              <th>Fonctions</th>
               <th>Email</th>
+              <th>Telephone</th>
               <th>Assignation</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let membre of membres">
+            <tr *ngFor="let user of users">
               <td><input type="checkbox" /></td>
-              <td>{{ membre.nom }}</td>
-              <td>
-                <span [ngClass]="membre.etat === 'Active' ? 'active' : 'inactive'">
-                  {{ membre.etat }}
-                </span>
+              <td>{{ user.nom }}</td>
+              <td *ngIf="user.etat == 'active'">
+                <span style="color: green;">{{ user.etat}}</span>
               </td>
-              <td>{{ membre.fonction }}</td>
-              <td>{{ membre.email }}</td>
+              <td *ngIf="user.etat == 'inactive'">
+                <span style="color: rgb(146, 21, 21);">{{ user.etat}}</span>
+              </td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.telephone }}</td>
               <td>
-                <button class="assign-button" routerLink="/assigner-carte">
+                <button class="assign-button" [routerLink]="['/assigner-carte', user._id]">
                   Assigner
                 </button>
               </td>

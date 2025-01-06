@@ -11,19 +11,22 @@ import { AttendanceListComponent } from './components/attendance-list/attendance
 import { GestionCartesComponent } from './components/gestion-cartes/gestion-cartes.component';
 import { AssignerCarteComponent } from './components/assigner-carte/assigner-carte.component';
 import { ConnexionComponent } from './connexion/connexion.component';
+import { ModifierAutreComponent } from './modifier-autre/modifier-autre.component';
+import { CohorteComponent } from './cohorte/cohorte.component';
 export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: '', redirectTo: '/connexion', pathMatch: 'full' },  // Redirection par défaut
   { path: 'dashboard', component: DashboardComponent },      // Route pour le dashboard
-  { path: 'learners', component: LearnersComponent },        // Gestion des employés
-  { path: 'inscription', component: InscriptionComponent },  // Route pour l'inscription
-  { path: 'modification/:id', component: ModificationComponent }, // Route pour la modification
-  { path: 'apprenant', component: ApprenantComponent }, // Route pour la modification
-  { path: 'listeaprenant', component: ListeaprenantComponent }, // Route pour la modification
+  { path: 'learners/:id', component: LearnersComponent },        // Gestion des employés
+  { path: 'inscription/:id', component: InscriptionComponent },  // Route pour l'inscription
+  { path: 'modification/:name/:id', component: ModificationComponent }, // Route pour la modification
+  { path: 'apprenant/:id', component: ApprenantComponent }, // Route pour la modification
+  { path: 'listeaprenant/:id', component: ListeaprenantComponent }, // Route pour la modification
   { path: 'departement', component: DepartementComponent }, // Route pour la modification
-  { path: 'ajoutdepartement', component: AjoutdepartementComponent }, // Route pour la modification
+  { path: 'ajouter/:name', component: AjoutdepartementComponent }, // Route pour la modification
   { path: 'attendance-list', component: AttendanceListComponent }, // Route pour la modification
   { path: 'gestion-cartes', component: GestionCartesComponent }, // Route pour la modification
-  { path: 'assigner-carte', component: AssignerCarteComponent }, // Route pour la modification
+  { path: 'assigner-carte/:id', component: AssignerCarteComponent }, // Route pour la modification
   { path: 'connexion', component: ConnexionComponent }, // Route pour la modification
-
+  { path: 'modifier-autre/:name/:id', component: ModifierAutreComponent }, // Redirection vers la page de connexion si une route inexistante est utilisée
+  { path: 'cohortes', component: CohorteComponent }, // Redirection to cohorte component
 ];

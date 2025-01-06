@@ -1,0 +1,57 @@
+<div class="modification-container">
+    <h2 class="title">Modification</h2>
+    <p class="subtitle">Option 1: Donner les informations</p>
+  
+    <form #userForm="ngForm" (ngSubmit)="onSubmit()">
+
+      <!-- departement -->
+
+      <div class="form-row" *ngIf="name == 'departement'">
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input id="nom" type="text" placeholder="Entrer le nom"  [(ngModel)]="departement.nom" name="nom" #nom="ngModel" />
+          <div *ngIf="nom.invalid && nom.touched" style="color: rgb(253, 7, 7);">
+            Nom est obligatoire.
+          </div>
+        </div>
+  
+        <div class="form-group" *ngIf="name == 'departement'">
+          <label for="description">Description</label>
+          <input id="description" type="text" placeholder="Entrer le prénom"  [(ngModel)]="departement.description" name="description"  #description="ngModel"/>
+          <div *ngIf="description.invalid && description.touched" style="color: rgb(253, 7, 7);">
+            Description est obligatoire.
+          </div>
+        </div>
+  
+      </div>
+
+<!-- COHORTES -->
+
+      <div class="form-row" *ngIf="name == 'cohorte'">
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input id="nom" type="text" placeholder="Entrer le nom"  [(ngModel)]="cohorte.nom" name="nom" #nom="ngModel" />
+          <div *ngIf="nom.invalid && nom.touched" style="color: rgb(253, 7, 7);">
+            Nom est obligatoire.
+          </div>
+        </div>
+  
+        <div class="form-group" *ngIf="name == 'cohorte'">
+          <label for="description">Description</label>
+          <input id="description" type="text" placeholder="Entrer le prénom"  [(ngModel)]="cohorte.description" name="description"  #description="ngModel"/>
+          <div *ngIf="description.invalid && description.touched" style="color: rgb(253, 7, 7);">
+            Description est obligatoire.
+          </div>
+        </div>
+  
+      </div>
+
+  
+      <div class="buttons">
+        <button type="submit" class="btn modifier">Modifier</button>
+        <button type="button" class="btn retour" (click)="retourVersListe()">Retour</button>
+          
+      </div>
+
+    </form>
+  </div>

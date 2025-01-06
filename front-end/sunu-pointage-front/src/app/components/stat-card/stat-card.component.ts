@@ -59,4 +59,8 @@ export class StatCardComponent {
   @Input() value!: string;
   @Input() iconClass!: string; // Classe d'icône Bootstrap
   @Input() iconColor: string = '#BF202F'; // Couleur des icônes
+
+  
 }
+ 
+
