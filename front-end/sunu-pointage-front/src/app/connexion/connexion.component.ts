@@ -1,142 +1,151 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 @Component({
-  selector: 'app-connexion',
-  templateUrl: './connexion.component.html',
+  selector: 'app-rfid-login',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
+  templateUrl: './connexion.component.html',
   styleUrls: ['./connexion.component.css']
 })
-export class ConnexionComponent {
+export class ConnexionComponent implements OnInit {
+  private ws!: WebSocket;
+
+  // Modèles pour la connexion par email et mot de passe
   email: string = '';
   password: string = '';
+  loginError: string = '';
+  rfidErrorMessage: string = '';
+
+
+  // Propriétés de contrôle
   isPasswordVisible: boolean = false;
-  errorMessage: string = ''; // Message d'erreur pour la connexion
-  emailInvalid: boolean = false; // Indicateur si l'email est invalide
-  passwordInvalid: boolean = false; // Indicateur si le mot de passe est invalide
-  passwordMismatch: boolean = false; // Indicateur si le mot de passe ne correspond pas à l'email
+  emailInvalid: boolean = false;
+  errorMessage: string = ''; // Message d'erreur général
 
-  constructor(private authService: AuthService, private router: Router) { }
+  // Propriété pour la validation de l'email
+  isValidEmail: boolean = true;
 
-  // Méthode pour gérer l'affichage du mot de passe
-  togglePasswordVisibility() {
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.connectToWebSocket();
+    //
+    
+  }
+
+  // Connexion via WebSocket pour le RFID
+  connectToWebSocket(): void {
+    this.ws = new WebSocket('ws://localhost:3001');
+
+    this.ws.onmessage = (event) => {
+      const uid = event.data;
+      console.log(`UID reçu : ${uid}`);
+      this.checkUser(uid);
+    };
+
+    this.ws.onopen = () => {
+      console.log('WebSocket connecté.');
+    };
+
+    this.ws.onerror = (error) => {
+      console.error('Erreur WebSocket :', error);
+    };
+
+    this.ws.onclose = () => {
+      console.log('WebSocket fermé. Tentative de reconnexion dans 5 secondes...');
+      setTimeout(() => this.connectToWebSocket(), 5000);
+    };
+  }
+
+  // Vérification de l'utilisateur via RFID
+  checkUser(uid: string): void {
+    fetch('http://localhost:3000/api/check-uid', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uid }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log(`Utilisateur connecté : ${data.user.name}`);
+          this.router.navigate(['/dashboard']);
+        } else {
+          console.warn('UID inconnu ou utilisateur non trouvé.');
+          this.rfidErrorMessage = 'Carte non enregistrée. Veuillez contacter l’administrateur.';
+        }
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la vérification de l’utilisateur :', error);
+        this.rfidErrorMessage = 'Une erreur s’est produite. Veuillez réessayer.';
+      });
+  }
+
+  // Connexion par email et mot de passe
+  loginWithEmail(): void {
+    this.errorMessage = ''; // Réinitialiser les messages d'erreur
+    this.emailInvalid = false; // Réinitialiser l'état de l'email
+    this.isValidEmail = true; // Réinitialiser la validation de l'email
+  
+    // Vérification si les deux champs (email et mot de passe) sont remplis
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Les deux champs (email et mot de passe) sont obligatoires.';
+      return;
+    }
+  
+    // Validation de l'email
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    this.isValidEmail = emailPattern.test(this.email); // Met à jour la validité de l'email
+  
+    if (!this.isValidEmail) {
+      this.errorMessage = 'L\'email que vous avez saisi est invalide.';
+      return;
+    }
+  
+  
+  
+    // Si tout est valide, tenter la connexion
+    fetch('http://localhost:3000/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: this.email, password: this.password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log(`Utilisateur connecté : ${data.user.name}`);
+          this.router.navigate(['/dashboard']); // Redirection vers le tableau de bord
+        } else {
+          this.errorMessage = 'Email ou mot de passe incorrect.';
+        }
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la connexion :', error);
+        this.errorMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
+      });
+  }
+  
+
+  // Méthode pour alterner la visibilité du mot de passe
+  togglePasswordVisibility(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
-  // Méthode pour gérer la connexion avec email et mot de passe
-  onLogin(event: Event) {
-    event.preventDefault(); // Empêche le rechargement de la page
-  
-    // Réinitialisation des indicateurs et du message d'erreur
-    this.emailInvalid = false;
-    this.passwordInvalid = false;
-    this.errorMessage = '';
-  
-    // Vérification si les champs sont vides
-    if (!this.email.trim() || !this.password.trim()) {
-      this.errorMessage = "Les deux champs doivent être remplis.";
-      return;
+  // Méthode de validation de l'email
+  validateEmail(): void {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    this.isValidEmail = emailPattern.test(this.email);
+  }
+
+/*   // Méthode de validation du mot de passe
+  validatePassword(): void {
+    // Vérifie si le mot de passe contient au moins 8 caractères
+    if (this.password.length < 8) {
+      this.errorMessage = 'Le mot de passe doit contenir au moins 8 caractères.';
+    } else {
+      this.errorMessage = ''; // Réinitialiser l'erreur
     }
-  
-    // Vérification de la validité de l'email
-    if (!this.isValidEmail(this.email)) {
-      this.emailInvalid = true;
-      this.errorMessage = "L'email ou le mot de passe est invalide.";
-      return;
-    }
-  
-    // Vérification de la longueur du mot de passe
-    if (this.password.length < 6) {
-      this.passwordInvalid = true;
-      this.errorMessage = "L'email ou le mot de passe est invalide.";
-      return;
-    }
-  
-    // Tentative de connexion
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        console.log('Connexion réussie', response);
-        this.errorMessage = ''; // Réinitialiser le message d'erreur
-  
-        // Redirection selon le rôle de l'utilisateur
-        if (response.role) {
-          if (response.role === 'admin') {
-            this.router.navigate(['/dashboard']);
-          } else if (response.role === 'vigile') {
-            this.router.navigate(['/dashboard-vigile']);
-          } else {
-            this.router.navigate(['/dashboard']);
-          }
-        } else {
-          console.error('Rôle non trouvé dans la réponse');
-          this.errorMessage = "Erreur: rôle introuvable.";
-        }
-      },
-      error: (err) => {
-        console.error('Échec de la connexion', err);
-        if (err.status === 401) {
-          // Message si les informations fournies sont incorrectes
-          this.errorMessage = "L'email ou le mot de passe est invalide.";
-        }
-      }
-    });
-  }
-  
-  
-
-  // Fonction pour vérifier si l'email est valide
-  isValidEmail(email: string): boolean {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailRegex.test(email);
-  }
-
-  // Méthode pour vérifier si le mot de passe correspond à l'email (en temps réel)
-  checkPasswordMismatch(email: string, password: string) {
-    this.authService.checkPassword(email, password).subscribe({
-      next: (response) => {
-        // Si la réponse indique que le mot de passe ne correspond pas
-        if (response && response.valid === false) {
-          this.passwordMismatch = true;
-        } else {
-          this.passwordMismatch = false;
-        }
-      },
-      error: (err) => {
-        console.error('Erreur lors de la vérification du mot de passe', err);
-        this.passwordMismatch = false;
-      }
-    });
-  }
-
-  // Méthode pour gérer la connexion via l'UID de la carte RFID
-  onCardLogin() {
-    const uid = 'D3A5D22E'; // Simuler un UID de carte RFID
-
-    this.authService.loginWithUID(uid).subscribe({
-      next: (response) => {
-        console.log('Connexion RFID réussie', response);
-
-        if (response.role) {
-          // Redirection selon le rôle
-          if (response.role === 'admin') {
-            this.router.navigate(['/dashboard']);
-          } else if (response.role === 'vigile') {
-            this.router.navigate(['/dashboard-vigile']);
-          } else {
-            this.router.navigate(['/dashboard']); // Redirection par défaut
-          }
-        } else {
-          console.error('Rôle non trouvé dans la réponse');
-          this.errorMessage = "Erreur: rôle introuvable.";
-        }
-      },
-      error: (err) => {
-        console.error('Échec de la connexion via la carte RFID', err);
-        this.errorMessage = "Erreur lors de la connexion avec la carte RFID.";
-      }
-    });
-  }
+  } */
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -7,6 +7,7 @@ export interface AuthResponse {
   token: string;
   role: string; // Rôle de l'utilisateur (admin, vigile, etc.)*
   valid?: boolean; 
+  username?:string;
 }
 
 @Injectable({
@@ -45,11 +46,16 @@ export class AuthService {
       );
   }
 
-  // Méthode pour déconnecter l'utilisateur
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-  }
+  // Méthode pour déconnecter l'utilisateur// Dans auth.service.ts
+logout(): Observable<any> {
+  return this.http.post('/api/logout', {}).pipe(
+    tap(() => {
+      // Nettoyer le localStorage ou sessionStorage si nécessaire
+      localStorage.removeItem('token');
+      // Autres nettoyages nécessaires
+    })
+  );
+}
 
   // Vérifier si l'utilisateur est connecté
   isLoggedIn(): boolean {
@@ -60,3 +66,4 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/check-password`, { email, password });
   }
 }
+ 
