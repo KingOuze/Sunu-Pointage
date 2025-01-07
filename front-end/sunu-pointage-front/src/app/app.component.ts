@@ -1,26 +1,26 @@
 import { Component } from '@angular/core';
-<<<<<<< HEAD
-import { RouterOutlet } from '@angular/router';  // Importer RouterOutlet
-import { FormsModule } from '@angular/forms'; // Importer FormsModule
-=======
+import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { DashboardComponent } from './dashboard-vigile/dashboard-vigile.component';
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
+import { AuthService } from './auth.service';
+import { CommonModule } from '@angular/common';
 
 
->>>>>>> fdcb699f818d01d9d249250c03d2053d1373342e
 
 @Component({
   selector: 'app-root',
   standalone: true,
-<<<<<<< HEAD
-  imports: [ RouterOutlet,FormsModule],  // Ajoutez RouterOutlet ici
-  template: `
-    <router-outlet></router-outlet>  <!-- Ceci est où les composants basés sur les routes s'affichent -->
-  `
-=======
-  imports: [DashboardComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
->>>>>>> fdcb699f818d01d9d249250c03d2053d1373342e
+  imports: [RouterOutlet, FormsModule, SidebarComponent, CommonModule],  // Ajoutez RouterOutlet ici
+  templateUrl: 'app.component.html', 
 })
-export class AppComponent {}
+export class AppComponent {
+
+  role: string = '';  // Variable pour stocker le rôle de l'utilisateur
+
+  constructor(private authService: AuthService){}
+
+  ngOnInit() {
+    this.role = this.authService.getUserRole(); // Récupère le rôle depuis le service
+    console.log(this.role);
+  }
+}

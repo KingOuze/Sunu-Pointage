@@ -26,7 +26,7 @@ app.use('/api', routes);
 app.use('/uploads', express.static('uploads'));
 
 // Connexion à MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/pointage-system', {
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/sunupointage', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -64,7 +64,7 @@ const verifyUser = async (cardId) => {
       return 'CARD_NOT_FOUND'; // Carte non trouvée
     }
 
-    if (user.status === 'bloqué') {
+    if (user.status === 'bloque') {
       console.log('Utilisateur bloqué');
       return 'USER_BLOCKED'; // Utilisateur bloqué
     }

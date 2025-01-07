@@ -65,5 +65,11 @@ logout(): Observable<any> {
   checkPassword(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/check-password`, { email, password });
   }
+
+  getUserRole(): string {
+    // Exemple : Récupérer le rôle depuis un token ou une session
+    const user = JSON.parse(localStorage.getItem('role') || '{}');
+    return user.role || '';
+  }
 }
  

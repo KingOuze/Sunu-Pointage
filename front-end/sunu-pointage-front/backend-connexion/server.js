@@ -12,21 +12,26 @@ app.use(express.json());
 app.use(cors());
 
 // Connexion à MongoDB
-mongoose.connect('mongodb://localhost:27017/pointage', {
+mongoose.connect('mongodb://localhost:27017/sunupointage', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 // Schéma de l'utilisateur
 const UserSchema = new mongoose.Schema({
-  uid: { type: String, unique: true, required: true },
-  name: String,
-  email: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'vigile'], required: true },
+  nom: String,
+  prenom: String,
+  photo: String,
+  adresse: String,
+  telephone: String,
+  dateNaissance: Date,
+  email: { type: String, unique: true},
+  password: { type: String},
+  role: { type: String, enum: ['admin', 'vigile', 'etudiant', 'employe'], required: true },
+  cardId: { type: String, unique: true },
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('users', UserSchema);
 
 // Configurer le port série pour l'Arduino
 const port = new SerialPort({ path: '/dev/ttyUSB0', baudRate: 9600 });
@@ -49,9 +54,9 @@ parser.on('data', async (data) => {
 
   // Vérifier si l'utilisateur existe avec cet UID
   try {
-    const user = await User.findOne({ uid });
+    const user = await User.findOne({ cardId: uid });
     if (user) {
-      console.log(`Utilisateur trouvé : ${user.name}`);
+      console.log(`Utilisateur trouvé : ${user}`);
     } else {
       console.log(`Carte non enregistrée. UID : ${uid}`);
     }
@@ -60,29 +65,15 @@ parser.on('data', async (data) => {
   }
 });
 
-// Route pour ajouter un utilisateur
-app.post('/users', async (req, res) => {
-  const { uid, name, email, password,role } = req.body;
-  try {
-    // Hacher le mot de passe
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Créer un nouvel utilisateur
-    const user = new User({ uid, name, email, password: hashedPassword,role});
-    await user.save();
-    res.status(201).json({ message: 'Utilisateur enregistré', user });
-  } catch (error) {
-    res.status(400).json({ error: 'Erreur lors de l\'enregistrement', details: error });
-  }
-});
 
 // Route pour vérifier un utilisateur avec l'UID
 app.post('/api/check-uid', async (req, res) => {
   const { uid } = req.body;
   try {
-    const user = await User.findOne({ uid });
+    const user = await User.findOne({ cardId: uid });
     if (user) {
-      return res.status(200).json({ success: true, user });
+      return res.status(200).json({ success: true, role: user.role });
     } else {
       return res.status(404).json({ success: false, message: 'Utilisateur non trouvé.' });
     }
@@ -114,10 +105,7 @@ app.post('/api/login', async (req, res) => {
     // Si tout est valide, retourner les informations de l'utilisateur
     return res.status(200).json({
       success: true,
-      user: {
-        name: user.name,
-        email: user.email,
-      },
+      role: user.role,
     });
   } catch (error) {
     console.error('Erreur lors de la connexion :', error);

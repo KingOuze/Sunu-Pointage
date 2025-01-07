@@ -21,15 +21,12 @@
     "@angular/platform-server": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@angular/ssr": "^18.2.11",
-<<<<<<< HEAD
     "@sweetalert2/ngx-sweetalert2": "^12.4.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.7",
-=======
     "@fortawesome/fontawesome-free": "^6.7.2",
     "axios": "^1.7.9",
->>>>>>> fdcb699f818d01d9d249250c03d2053d1373342e
     "express": "^4.18.2",
     "font-awesome": "^4.7.0",
     "ngx-bootstrap": "^18.1.3",

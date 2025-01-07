@@ -8,13 +8,13 @@ import { DoorAccessComponent } from '../door-access/door-access.component';
 import { Router } from '@angular/router'; // Importer Router
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-dashboard-vigile',
   templateUrl: './dashboard-vigile.component.html',
   standalone: true,
   imports: [ClockComponent, DoorAccessComponent, CommonModule],
   styleUrls: ['./dashboard-vigile.component.css']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardVigileComponent implements OnInit, OnDestroy {
   users: any[] = []; // Pour stocker les utilisateurs récupérés
   userExists: boolean = false; // Variable pour vérifier si un utilisateur est trouvé
   errorMessage: string = ''; // Pour afficher les messages d'erreur métier

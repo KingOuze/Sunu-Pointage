@@ -1,12 +1,11 @@
-<<<<<<< HEAD
-<div class="app-container">
-  <app-toast></app-toast>
+<div class="app-container" *ngIf="role == 'admin'">
   <app-sidebar></app-sidebar>
   <div class="main-content">
-    <router-outlet></router-outlet>  <!-- Conteneur pour le contenu dynamique -->
+    <router-outlet/> <!-- Conteneur pour le contenu dynamique -->
   </div>
 </div>
-=======
-
-<app-dashboard></app-dashboard>
->>>>>>> fdcb699f818d01d9d249250c03d2053d1373342e
+<div class="app-container" *ngIf="role == 'vigile' || role == ''">
+  <div class="main-content">
+    <router-outlet/> <!-- Conteneur pour le contenu dynamique -->
+  </div>
+</div>

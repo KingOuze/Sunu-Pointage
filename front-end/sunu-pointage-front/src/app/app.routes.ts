@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-<<<<<<< HEAD
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LearnersComponent } from './components/learners/learners.component'; // Gestion des employés
 import { InscriptionComponent } from './components/inscription/inscription.component'; // Assurez-vous du chemin correct
@@ -16,9 +15,16 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ModifierAutreComponent } from './modifier-autre/modifier-autre.component';
 import { CohorteComponent } from './cohorte/cohorte.component';
+import { DashboardVigileComponent } from './dashboard-vigile/dashboard-vigile.component';
+import { AuthGuard } from './auth-guard.guard';
+
+
+
+
 export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: '', redirectTo: '/connexion', pathMatch: 'full' },  // Redirection par défaut
-  { path: 'dashboard', component: DashboardComponent },      // Route pour le dashboard
+  { path: 'dashboard',  canActivate: [AuthGuard],
+    data: { roles: ['admin'] }, component: DashboardComponent },      // Route pour le dashboard
   { path: 'learners/:id', component: LearnersComponent },        // Gestion des employés
   { path: 'inscription/:id', component: InscriptionComponent },  // Route pour l'inscription
   { path: 'modification/:name/:id', component: ModificationComponent }, // Route pour la modification
@@ -34,14 +40,8 @@ export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   { path: 'modifier-autre/:name/:id', component: ModifierAutreComponent }, // Redirection vers la page de connexion si une route inexistante est utilisée
   { path: 'cohortes', component: CohorteComponent }, // Redirection to cohorte component
+  { path: 'dashboard-vigile',  canActivate: [AuthGuard],
+    data: { roles: ['vigile'] }, component: DashboardVigileComponent },
+  //{ path: 'dashboard-pointage', component: DashboardComponent },
 ];
-=======
-import { DashboardComponent } from './dashboard-vigile/dashboard-vigile.component';
 
-export const routes: Routes = [
-
-    { path: '', redirectTo: '/dashboard-vigile', pathMatch: 'full' },
-    { path: 'dashboard-vigile', component: DashboardComponent },
-    { path: 'dashboard-pointage', component: DashboardComponent },
-];
->>>>>>> fdcb699f818d01d9d249250c03d2053d1373342e

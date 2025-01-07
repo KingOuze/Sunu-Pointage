@@ -21,7 +21,6 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-<<<<<<< HEAD
              "src/assets",
                       "src/favicon.ico"
             ],
@@ -29,18 +28,11 @@
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "node_modules/font-awesome/css/font-awesome.css"
-=======
-              
-               "src/assets",
-                "src/favicon.ico"
+              "node_modules/font-awesome/css/font-awesome.css",
+               "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
               
             ],
-            "styles": [
-              "src/styles.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
->>>>>>> fdcb699f818d01d9d249250c03d2053d1373342e
-            ],
+            
             "scripts": [],
             "server": "src/main.server.ts",
             "prerender": true,

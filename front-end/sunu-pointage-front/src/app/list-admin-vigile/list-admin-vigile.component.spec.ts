@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardComponent } from './dashboard-vigile.component';
+import { ListAdminVigileComponent } from './list-admin-vigile.component';
 
-describe('DashboardComponent', () => {
-  let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
+describe('ListAdminVigileComponent', () => {
+  let component: ListAdminVigileComponent;
+  let fixture: ComponentFixture<ListAdminVigileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent]
+      imports: [ListAdminVigileComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DashboardComponent);
+    fixture = TestBed.createComponent(ListAdminVigileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
