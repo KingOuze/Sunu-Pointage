@@ -72,6 +72,14 @@ export class DashboardVigile implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+  logout() {
+    // Logique de déconnexion (ex : suppression du token ou session)
+    // Exemple : localStorage.removeItem('user'); // Si vous stockez l'utilisateur en localStorage
+    // Vous pouvez ajouter ici tout mécanisme de déconnexion spécifique à votre application
+
+    // Rediriger vers la page de connexion
+    this.router.navigate(['/connexion']);
+  }
 
   // Méthode pour vérifier si un utilisateur existe
   hasUser(): boolean {
