@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardVigile } from './dashboard-vigile/dashboard-vigile.component';
 import { LearnersComponent } from './components/learners/learners.component'; // Gestion des employés
 import { InscriptionComponent } from './components/inscription/inscription.component'; // Assurez-vous du chemin correct
 import { ModificationComponent } from './components/modification/modification.component';
@@ -29,5 +30,6 @@ export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: 'connexion', component: ConnexionComponent }, // Route pour la modification
   { path: 'forgot-password', component: ForgotPasswordComponent }, //mot de pass oublié
   { path: 'reset-password/:token', component: ResetPasswordComponent },
+  { path: 'dashbord-vigile', component: DashboardVigile },
 
 ];

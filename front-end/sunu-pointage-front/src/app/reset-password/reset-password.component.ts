@@ -1,38 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth.service';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reset-password',
   standalone:true,
-  imports:[FormsModule],
+  imports:[CommonModule,FormsModule],
   templateUrl: './reset-password.component.html',
 })
-export class ResetPasswordComponent implements OnInit {
-  newPassword: string = '';
+export class ResetPasswordComponent {
   token: string = '';
+  newPassword: string = '';
+  message: string = '';
+  error: string = '';
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    // Récupérer le token de l'URL
+    // Récupérer le jeton de l'URL
     this.token = this.route.snapshot.paramMap.get('token') || '';
   }
 
   onSubmit() {
-    this.http.post('http://localhost:5000/api/auth/reset-password', { 
-      token: this.token, 
-      newPassword: this.newPassword 
-    })
-    .subscribe({
-      next: () => {
-        alert('Mot de passe réinitialisé avec succès');
-        // Rediriger vers une autre page si nécessaire
+    this.authService.resetPassword(this.token, this.newPassword).subscribe({
+      next: (response) => {
+        this.message = response.message; // Message de succès
+        this.error = ''; // Réinitialiser les erreurs
       },
       error: (err) => {
-        console.error('Erreur lors de la réinitialisation du mot de passe', err);
-      }
+        this.error = err.error.message; // Message d'erreur
+        this.message = ''; // Réinitialiser les messages de succès
+      },
     });
   }
 }

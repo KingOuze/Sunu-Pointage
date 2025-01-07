@@ -27,14 +27,34 @@ export class ConnexionComponent implements OnInit {
 
   // Propriété pour la validation de l'email
   isValidEmail: boolean = true;
+ 
 
-  constructor(private router: Router) {}
+  // Validation du mot de passe
+  isPasswordValid: boolean = false;
 
-  ngOnInit(): void {
-    this.connectToWebSocket();
-    //
-    
-  }
+
+
+// Propriétés de contrôle
+
+
+
+cardErrorMessage: string = ''; // Message d'erreur spécifique pour la carte RFID
+
+// Propriété pour la validation de l'email
+
+isPasswordTouched: boolean = false; // Nouveau champ pour suivre l'interaction avec le mot de passe
+
+
+constructor(private router: Router) {}
+
+ngOnInit(): void {
+  this.connectToWebSocket();
+}
+
+// Méthode pour marquer le champ de mot de passe comme touché
+onPasswordInput(): void {
+  this.isPasswordTouched = true; // Marquer comme touché lorsque l'utilisateur tape
+}
 
   // Connexion via WebSocket pour le RFID
   connectToWebSocket(): void {
@@ -59,6 +79,14 @@ export class ConnexionComponent implements OnInit {
       setTimeout(() => this.connectToWebSocket(), 5000);
     };
   }
+  validatePassword() {
+    if (this.password.length >= 8) {
+      this.isPasswordValid = true;
+    } else {
+      this.isPasswordValid = false;
+    }
+  }
+
 
   // Vérification de l'utilisateur via RFID
   checkUser(uid: string): void {
@@ -84,48 +112,55 @@ export class ConnexionComponent implements OnInit {
   }
 
   // Connexion par email et mot de passe
-  loginWithEmail(): void {
-    this.errorMessage = ''; // Réinitialiser les messages d'erreur
-    this.emailInvalid = false; // Réinitialiser l'état de l'email
-    this.isValidEmail = true; // Réinitialiser la validation de l'email
-  
-    // Vérification si les deux champs (email et mot de passe) sont remplis
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Les deux champs (email et mot de passe) sont obligatoires.';
-      return;
-    }
-  
-    // Validation de l'email
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    this.isValidEmail = emailPattern.test(this.email); // Met à jour la validité de l'email
-  
-    if (!this.isValidEmail) {
-      this.errorMessage = 'L\'email que vous avez saisi est invalide.';
-      return;
-    }
-  
-  
-  
-    // Si tout est valide, tenter la connexion
-    fetch('http://localhost:3000/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: this.email, password: this.password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          console.log(`Utilisateur connecté : ${data.user.name}`);
-          this.router.navigate(['/dashboard']); // Redirection vers le tableau de bord
-        } else {
-          this.errorMessage = 'Email ou mot de passe incorrect.';
-        }
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la connexion :', error);
-        this.errorMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
-      });
+ // Connexion par email et mot de passe
+loginWithEmail(): void {
+  this.errorMessage = ''; // Réinitialiser les messages d'erreur
+  this.emailInvalid = false; // Réinitialiser l'état de l'email
+  this.isValidEmail = true; // Réinitialiser la validation de l'email
+
+  // Vérification si les deux champs (email et mot de passe) sont remplis
+  if (!this.email || !this.password) {
+    this.errorMessage = 'Les deux champs (email et mot de passe) sont obligatoires.';
+    return;
   }
+
+  // Validation de l'email
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  this.isValidEmail = emailPattern.test(this.email); // Met à jour la validité de l'email
+
+  if (!this.isValidEmail) {
+    this.errorMessage = 'L\'email que vous avez saisi est invalide.';
+    return;
+  }
+
+  // Si tout est valide, tenter la connexion
+  fetch('http://localhost:3000/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: this.email, password: this.password }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log(`Utilisateur connecté : ${data.user.name}`);
+
+        // Redirection en fonction du rôle
+        if (data.user.role === 'admin') {
+          this.router.navigate(['/dashboard']); // Redirection vers le tableau de bord admin
+        } else if (data.user.role === 'vigile') {
+          this.router.navigate(['/dashboard-vigile']); // Redirection vers le tableau de bord vigile
+        } else {
+          this.errorMessage = 'Rôle non reconnu.';
+        }
+      } else {
+        this.errorMessage = 'Email ou mot de passe incorrect.';
+      }
+    })
+    .catch((error) => {
+      console.error('Erreur lors de la connexion :', error);
+      this.errorMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
+    });
+}
   
 
   // Méthode pour alterner la visibilité du mot de passe
@@ -148,4 +183,7 @@ export class ConnexionComponent implements OnInit {
       this.errorMessage = ''; // Réinitialiser l'erreur
     }
   } */
+    goToForgotPassword() {
+      this.router.navigate(['/forgot-password']);
+}
 }

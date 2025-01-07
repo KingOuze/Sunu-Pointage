@@ -5,6 +5,10 @@ import { LearnersComponent } from './components/learners/learners.component';
 import { ModificationComponent } from './components/modification/modification.component';
 import { FormsModule } from '@angular/forms'; // Importer FormsModule
 
+import { DashboardVigile } from './dashboard-vigile/dashboard-vigile.component';
+
+
+
 @Component({
   selector: 'app-root',
   standalone: true,

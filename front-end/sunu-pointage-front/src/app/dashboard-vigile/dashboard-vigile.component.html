@@ -1,0 +1,100 @@
+<!-- Dashboard si un utilisateur existe -->
+<div *ngIf="hasUser()" class="dashboard-container">
+  <!-- En-tête modifié -->
+  <header class="dashboard-header">
+    <img src="../../assets/Sunu pointage (3).png" alt="Logo" class="logo">
+    <h1 class="dashboard-title">Dashboard Vigile</h1>
+    <button class="btn btn-custom">Déconnexion</button>
+  </header>
+
+  <div class="dashboard-container">
+    <!-- Contenu principal -->
+    <main class="dashboard-main">
+      <!-- Section image utilisateur -->
+      <div class="user-image">
+      </div>
+  
+      <!-- Informations utilisateur -->
+      <div class="user-info-card">
+        <h5>Informations de l'utilisateur</h5>
+        <div class="user-info">
+          <img *ngIf="users[0]?.photo" [src]="'http://localhost:3000' + users[0]?.photo" alt="User Image">
+          <div class="info-row">
+            <span class="info-label">Matricule:</span>
+            <span class="info-value">{{ users[0]?.matricule }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Prénom:</span>
+            <span class="info-value">{{ users[0]?.prenom }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Nom:</span>
+            <span class="info-value">{{ users[0]?.nom }}</span>
+          </div>
+    
+        </div>
+      </div>
+    </main>
+    
+  
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <div class="door-access-section">
+        <app-door-access></app-door-access>
+      </div>
+ 
+ <!-- Si l'utilisateur est bloqué, afficher le message "L'utilisateur a été bloqué" -->
+<div *ngIf="users[0]?.status === 'bloqué'; else actionButtons">
+  <div class="modal-backdrop" tabindex="-1" role="dialog" aria-labelledby="blockedModalLabel" aria-hidden="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="blockedModalLabel">Informations</h3>
+          <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="icon-container">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <p class="centered-text">L'utilisateur a été bloqué.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="goToDefaultDashboard()">Retour</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Si l'utilisateur n'est pas bloqué, afficher les boutons "Valider" et "Rejeter" -->
+    <ng-template #actionButtons>
+      <div class="validation-buttons">
+        <button class="btn btn-custom" (click)="rejectAction()">Rejeter</button>
+        <button class="btn btn-danger" (click)="validateAction()">Valider</button>
+      </div>
+    </ng-template>
+    </footer>
+  </div>
+</div>
+
+<!-- Dashboard par défaut si aucun utilisateur n'existe -->
+<div *ngIf="!hasUser()" class="dashboard-container">
+  <!-- En-tête modifié -->
+  <header class="dashboard-header">
+    <img src="../../assets/Sunu pointage (3).png" alt="Logo" class="logo">
+    <h1 class="dashboard-title">Dashboard Vigile</h1>
+    <button class="btn btn-custom">Déconnexion</button>
+  </header>
+  <section class="clock-section my-4">
+    <app-clock></app-clock>
+  </section>
+
+  <div class="main-content-with-bg">
+    <h2 class="status-text">Pointage En Attente..!!</h2>
+    <div class="door-access-wrapper">
+      <app-door-access></app-door-access>
+    </div>
+  </div>
+</div>

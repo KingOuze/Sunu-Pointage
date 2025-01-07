@@ -1,0 +1,408 @@
+/* Conteneur principal */
+.dashboard-container {
+  margin: 0 auto; /* Centre le conteneur */
+  padding: 20px; /* Espacement interne */
+  max-width: 1200px; /* Largeur maximale */
+  font-family: Arial, sans-serif; /* Police de caractères */
+  padding-bottom: 40px; /* Ajouté pour espacer le footer */
+}
+.dashboard-title{
+  padding-left: 6%;
+}
+
+/* En-tête */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 70px; 
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+/* Style pour le bouton de fermeture */
+.btn-danger {
+  background-color: #BF202F; /* Fond rouge */
+  color: white; /* Texte blanc */
+  border-color: #BF202F; /* Bordure rouge */
+  height: 40px;
+  width: 98px;
+  
+}
+/* Informations utilisateur */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 200px;
+  align-items: center;
+  gap: 10px; /* Espacement entre les lignes */
+  margin-top: 20px; /* Espacement supplémentaire au-dessus */
+}
+
+/* Image utilisateur */
+.user-image img {
+  width: 100px; /* Largeur de l'image */
+  height: 100px; /* Hauteur de l'image */
+  border-radius: 50%; /* Forme circulaire */
+  border: 2px solid #bf202f; /* Bordure rouge */
+}
+.blocked-message {
+  display: flex; /* Utiliser Flexbox */
+  justify-content: center; /* Centrer les éléments horizontalement */
+  align-items: center; /* Centrer les éléments verticalement */
+  gap: 10px; /* Ajouter un espace entre le texte et le bouton */
+  font-size: large;
+}
+/* Modal backdrop (fond d'écran semi-transparent) */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1050;
+}
+/* Conteneur pour l'icône */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0; /* Espacement autour de l'icône */
+}
+
+.icon-container i {
+  font-size: 50px; /* Taille de l'icône */
+  color: #BF202F; /* Couleur rouge */
+}
+/* Style pour centrer le texte */
+.centered-text {
+  text-align: center; /* Centre le texte */
+  margin-top: 10px; /* Espacement au-dessus du texte */
+  font-size: 16px; /* Ajustez la taille de la police si nécessaire */
+  color: #333; /* Couleur du texte */
+}
+/* Style du modal */
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.modal-content {
+  max-width: 400px; /* Largeur maximale */
+  width: 90%; /* Conserve la largeur relative */
+  min-height: 300px; /* Augmentez la hauteur minimale selon vos besoins */
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+/* En-tête du modal */
+.modal-header {
+  background-color: #BF202F;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Corps du modal */
+.modal-body {
+  font-size: 14px; /* Taille de police légèrement réduite */
+  color: #333;
+  padding: 20px;
+  line-height: 1.5;
+}
+
+/* Pied du modal */
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ddd;
+}
+
+/* Bouton du pied de modal */
+.modal-footer button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #BF202F;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.modal-footer button:hover {
+  background-color: #a01b2a;
+}
+
+/* Bouton de fermeture */
+.close {
+  color: white;
+  font-size: 1.5em;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Animation d'apparition */
+.modal.show {
+  transform: translateY(-50%) scale(1);
+  opacity: 1;
+}
+
+.modal.hide {
+  transform: translateY(-50%) scale(0.95);
+  opacity: 0;
+}
+button.btn-danger {
+  padding: 10px 20px; /* Ajouter du padding au bouton pour l'agrandir */
+  font-size: 14px; /* Ajuster la taille de la police du bouton */
+  cursor: pointer; /* Changer le curseur en forme de main */
+}
+
+
+/* Ligne d'information */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  width: 300px; /* Largeur fixe */
+  padding: 10px; /* Espacement interne */
+  border-radius: 8px; /* Coins arrondis */
+  background-color: #f5f5f5; /* Fond gris clair */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+  font-size: 1rem; /* Taille de texte */
+  font-family: Arial, sans-serif;
+}
+
+/* Footer principal */
+.dashboard-footer {
+  display: flex; /* Utilisation de flexbox */
+  justify-content: space-between; /* Aligne les éléments à gauche et à droite */
+  align-items: center; /* Centre les éléments verticalement */
+  margin-top: 200px; /* Augmentation pour un espacement plus grand */
+  padding: 10px 20px; /* Espacement interne */
+  background-color: #f8f9fa; /* Fond clair */
+  border-radius: 8px; /* Coins arrondis */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre douce */
+}
+
+/* Section du sélecteur d'accès */
+.door-access-section {
+  flex: 1; /* Occupe l'espace à gauche */
+  display: flex;
+  justify-content: flex-start; /* Alignement à gauche */
+}
+
+/* Section des boutons */
+.validation-buttons {
+  display: flex;
+  gap: 10px; /* Espacement entre les boutons */
+}
+/* Étiquette (label) */
+.info-label {
+  color: #bf202f; /* Rouge foncé */
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Valeur (value) */
+.info-value {
+  color: #333; /* Texte noir */
+}
+
+/* Styles responsives */
+@media (max-width: 768px) {
+  .main-section {
+    flex-direction: column; /* Passe en colonne sur les petits écrans */
+    align-items: center; /* Centrage horizontal */
+  }
+
+  .info-row {
+    width: 100%; /* Largeur adaptative */
+    text-align: center;
+  }
+}
+
+.logo {
+  width: 90px;
+  height: auto;
+}
+
+.dashboard-title {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Section principale avec background */
+.main-content-with-bg {
+  position: relative; /* Nécessaire pour positionner les éléments absolus */
+  height: 810px; /* Ajustez cette valeur en fonction de la taille de votre image */
+  background-image: url('../../assets/Image collée.png'); /* Image en background */
+  background-size: cover; /* Couvre tout l'espace disponible */
+  background-position: center; /* Centrer l'image */
+  background-repeat: no-repeat; /* Pas de répétition */
+  border-radius: 8px;
+  display: flex; /* Flexbox pour aligner le contenu */
+  flex-direction: column;
+  justify-content: center; /* Centré verticalement */
+  align-items: center; /* Centré horizontalement */
+  color: #fff; /* Texte en blanc */
+}
+
+/* Texte principal */
+.status-text {
+  font-size: 30px;
+  margin: 0;
+  color: #BF202F;
+  padding-bottom: 70%;
+}
+
+/* Positionnement du bouton d'accès */
+.door-access-wrapper {
+  position: absolute; /* Positionnement en bas à gauche */
+  bottom: 10px;
+  left: 10px;
+}
+
+/* Section des composants */
+.clock-section {
+  margin: 20px 0;
+}
+
+/* Boutons */
+.btn {
+  transition: background-color 0.3s ease;
+}
+/* Style personnalisé pour le bouton Déconnexion */
+.btn-custom {
+  background-color: white; /* Fond blanc */
+  color: #BF202F; /* Texte rouge */
+  border: 2px solid #BF202F; /* Bordure rouge */
+  border-radius: 4px; /* Bords légèrement arrondis (rectangle) */
+  padding: 10px 20px; /* Espacement interne */
+  font-weight: bold; /* Texte en gras */
+  font-size: 1rem; /* Taille de la police */
+  cursor: pointer; /* Curseur pointeur */
+  transition: all 0.3s ease; /* Transition pour l'effet au survol */
+}
+
+/* Effet au survol */
+.btn-custom:hover {
+  background-color: #BF202F; /* Fond rouge */
+  color: white; /* Texte blanc */
+}
+/* Style pour le bouton de fermeture */
+.btn-danger {
+  background-color: #BF202F; /* Fond rouge */
+  color: white; /* Texte blanc */
+  border-color: #BF202F; /* Bordure rouge */
+}
+/* Carte d'informations utilisateur */
+.user-info-card {
+  font-size: 30px; /* Taille de la police */
+  margin: 0; /* Marge externe */
+  color: #BF202F; /* Couleur du texte */
+  background-color: #ffffff; /* Fond blanc */
+  border-radius: 8px; /* Coins arrondis */
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Ombre douce */
+ 
+  padding: 50px; /* Espacement interne */
+  margin: 20px 0; /* Espacement externe */
+  text-align: center; /* Centre le texte dans la carte */
+}
+
+
+/* Style responsive pour différentes tailles d'écran */
+@media (max-width: 1024px) {
+  .main-content-with-bg {
+    height: 400px;
+  }
+  .status-text {
+    font-size: 1rem;
+    padding-bottom: 20%;
+  }
+  .btn-custom {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column; /* En-tête sur plusieurs lignes */
+    text-align: center;
+  }
+  .logo {
+    max-width: 80px; /* Réduction de la taille du logo */
+  }
+  .dashboard-title {
+    font-size: 1.2rem;
+  }
+  .main-content-with-bg {
+    height: 300px;
+  }
+  .status-text {
+    font-size: 0.9rem;
+    padding-bottom: 10%;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+  .dashboard-title {
+    font-size: 1rem;
+  }
+  .btn-custom {
+    font-size: 0.8rem;
+    padding: 8px 15px;
+  }
+  .main-content-with-bg {
+    height: 250px;
+  }
+  .status-text {
+    font-size: 0.8rem;
+  }
+}
