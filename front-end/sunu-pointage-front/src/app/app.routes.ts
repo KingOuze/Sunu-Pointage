@@ -16,15 +16,16 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ModifierAutreComponent } from './modifier-autre/modifier-autre.component';
 import { CohorteComponent } from './cohorte/cohorte.component';
 import { DashboardVigileComponent } from './dashboard-vigile/dashboard-vigile.component';
-import { AuthGuard } from './auth-guard.guard';
+//import { AuthGuard } from './auth-guard.guard';
+import { ListAdminVigileComponent } from './list-admin-vigile/list-admin-vigile.component';
+import { AjoutAdminComponent } from './ajout-admin/ajout-admin.component';
 
 
 
 
 export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: '', redirectTo: '/connexion', pathMatch: 'full' },  // Redirection par défaut
-  { path: 'dashboard',  canActivate: [AuthGuard],
-    data: { roles: ['admin'] }, component: DashboardComponent },      // Route pour le dashboard
+  { path: 'dashboard',  component: DashboardComponent },      // Route pour le dashboard
   { path: 'learners/:id', component: LearnersComponent },        // Gestion des employés
   { path: 'inscription/:id', component: InscriptionComponent },  // Route pour l'inscription
   { path: 'modification/:name/:id', component: ModificationComponent }, // Route pour la modification
@@ -40,8 +41,9 @@ export const appRoutes: Routes = [  // Exportez correctement appRoutes
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   { path: 'modifier-autre/:name/:id', component: ModifierAutreComponent }, // Redirection vers la page de connexion si une route inexistante est utilisée
   { path: 'cohortes', component: CohorteComponent }, // Redirection to cohorte component
-  { path: 'dashboard-vigile',  canActivate: [AuthGuard],
-    data: { roles: ['vigile'] }, component: DashboardVigileComponent },
+  { path: 'dashboard-vigile',  component: DashboardVigileComponent },
+  { path: 'liste', component: ListAdminVigileComponent }, 
+  { path: 'ajouter', component: AjoutAdminComponent },
   //{ path: 'dashboard-pointage', component: DashboardComponent },
 ];
 

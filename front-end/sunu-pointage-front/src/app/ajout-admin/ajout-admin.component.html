@@ -1,0 +1,93 @@
+<div class="page-container">
+    
+    <!-- Contenu principal -->
+    <div class="container">
+      <div class="form-container">
+          
+        <h2 class="title">Inscription</h2>
+        <p class="subtitle">Option1: Donner les informations</p>
+    
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <!-- Première ligne : Nom, Prénom, Photo -->
+          <div class="row">
+            <div class="input-group">
+              <label for="nom">Nom</label>
+              <input id="nom" formControlName="nom" type="text" placeholder="Entrer le nom" />
+              <div *ngIf="userForm.get('nom')?.invalid && userForm.get('nom')?.touched" style="color: rgb(253, 7, 7);">
+                Le nom est requis.
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="prenom">Prénom</label>
+              <input id="prenom" formControlName="prenom" type="text" placeholder="Entrer le prénom" />
+              <div *ngIf="userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched" style="color: rgb(253, 7, 7);">
+                Le prenom est requis.
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="addresse">Addresse</label>
+              <input id="addresse" formControlName="addresse" type="text" placeholder="Entrer l'addresse" />
+              <div *ngIf="userForm.get('addresse')?.invalid && userForm.get('addresse')?.touched" style="color: rgb(253, 7, 7);">
+                L'addresse est requis.
+              </div>
+            </div>
+            <div class="input-group photo-upload">
+              <label for="photo">Photo</label>
+              <input id="photo" type="file" (change)="onFileChange($event)" accept=".jpeg, .png"/>
+              <div *ngIf="userForm.get('photo')?.invalid && userForm.get('photo')?.touched">
+                La photo est requise.
+              </div>
+            </div>
+          </div>
+    
+          <!-- Deuxième ligne : Téléphone, Email, Département -->
+          <div class="row">
+            <div class="input-group">
+              <label for="telephone">Téléphone</label>
+              <input id="telephone" formControlName="telephone" type="text" placeholder="Entrer le numéro de téléphone" />
+              <div *ngIf="userForm.get('telephone')?.invalid && userForm.get('telephone')?.touched" style="color: rgb(253, 7, 7);">
+                Le téléphone est requis.
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="email">Email</label>
+              <input id="email" formControlName="email" type="email" placeholder="Entrer l'email" />
+              <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" style="color: rgb(253, 7, 7);">
+                L'email est requis.
+              </div>
+            </div>
+            <div class="input-group">
+                <label for="password">Mot de Passe</label>
+                <input id="password" formControlName="password" type="password" placeholder="Entrer le mot de passe" />
+                <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" style="color: rgb(253, 7, 7);">
+                  Le mot de passe est requis.
+                </div>
+              </div>
+            <div class="input-group">
+              <label for="role">Role</label>
+              <select
+                    id="role"
+                    name="role"
+                    formControlName="role"
+                    required
+                    class="form-control"
+                    >
+                    <option value="" disabled>--Sélectionner--</option>
+                    <option value="admin" >Administrateur</option>
+                    <option value="vigile">Vigile</option>
+                </select>
+              <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched" style="color: rgb(253, 7, 7);">
+                Le Role est requis
+              </div>
+            </div>
+          </div>
+          <!-- Boutons -->
+          <div class="buttons">
+            <button type="submit" class="btn inscrire">Inscrire</button>
+            <button type="button" class="btn retour" (click)="retourVersListeApprenant()">Retour</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

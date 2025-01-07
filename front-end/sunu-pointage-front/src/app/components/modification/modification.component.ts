@@ -159,6 +159,8 @@ export class ModificationComponent {
       this.router.navigate(['learners', this.name]);
     } else if(role == 'etudiant') {
       this.router.navigate(['listeaprenant', this.name]);
+    } else {
+      this.router.navigate(['liste']);
     }
   }
   

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ClockComponent } from '../clock/clock.component';
 import { DoorAccessComponent } from '../door-access/door-access.component';
 import { Router } from '@angular/router'; // Importer Router
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-dashboard-vigile',
@@ -20,7 +21,7 @@ export class DashboardVigileComponent implements OnInit, OnDestroy {
   errorMessage: string = ''; // Pour afficher les messages d'erreur métier
   private unsubscribe$ = new Subject<void>(); // Pour gérer les désabonnements
 
-  constructor(private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,private router: Router) {}
+  constructor(private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     // Connexion au WebSocket et réception des données en temps réel
@@ -164,5 +165,9 @@ goToHistoriquePointage() {
       });
       this.goToDefaultDashboard();
     }
+  }
+
+  logOut(){
+    this.authService.logout();
   }
 }

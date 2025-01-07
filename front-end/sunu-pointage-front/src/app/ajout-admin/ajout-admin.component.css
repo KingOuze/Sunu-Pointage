@@ -1,0 +1,130 @@
+/* Conteneur principal */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa; /* Gris clair */
+  }
+  
+  /* Boîte principale */
+  .form-container {
+    width: 800px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  /* Titres */
+  .title {
+    color: #a02020;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Inputs et labels */
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    flex: 1;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-group:last-child {
+    margin-right: 0;
+  }
+  
+  label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  input,
+  select {
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  input::placeholder {
+    color: #bbb;
+  }
+  
+  input[type="file"] {
+    border: none;
+  }
+  
+  /* Boutons */
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .btn {
+    width: 45%;
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn.inscrire {
+    background-color: #a02020; /* Rouge */
+  }
+  
+  .btn.retour {
+    background-color: #555; /* Gris foncé */
+  }
+  
+  .btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* Photo upload style */
+  .photo-upload input {
+    cursor: pointer;
+    border: none;
+    background-color: #f3f3f3;
+    padding: 8px;
+    border-radius: 5px;
+  }
+  .page-container {
+    display: flex; /* Utiliser flexbox pour la mise en page */
+  }
+  
+  app-sidebar {
+    width: 250px; /* Largeur du sidebar */
+  }
+  
+  .container {
+    flex: 1; /* Prendre le reste de l'espace disponible */
+    padding: 20px; /* Espacement autour du contenu principal */
+  }
+  
+  .form-container {
+    background: #f9f9f9; /* Fond pour le formulaire */
+    padding: 20px;
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  }

@@ -1,11 +1,5 @@
-<div class="app-container" *ngIf="role == 'admin'">
-  <app-sidebar></app-sidebar>
-  <div class="main-content">
-    <router-outlet/> <!-- Conteneur pour le contenu dynamique -->
-  </div>
-</div>
-<div class="app-container" *ngIf="role == 'vigile' || role == ''">
-  <div class="main-content">
+<div class="app-container">
+  <div>
     <router-outlet/> <!-- Conteneur pour le contenu dynamique -->
   </div>
 </div>

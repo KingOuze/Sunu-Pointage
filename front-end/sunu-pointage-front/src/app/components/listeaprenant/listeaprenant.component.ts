@@ -13,21 +13,20 @@ import { UserFilterService } from '../../services/user-filter.service';
 @Component({
   selector: 'app-listeaprenant',
   standalone: true,
-  imports: [SidebarComponent,CommonModule,RouterModule, FormsModule, SweetAlert2Module, NgxPaginationModule],
+  imports: [SidebarComponent,CommonModule,RouterModule, FormsModule, SweetAlert2Module],
   templateUrl: './listeaprenant.component.html',
   styleUrl: './listeaprenant.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListeaprenantComponent {
   
   cohorteId: string = '';
   learners: User[] = [];
   selectedFile: File | undefined;
-  currentPage: number = 1; // Page actuelle
+ // currentPage: number = 1; // Page actuelle
   //filteredUsers =  [...this.learners];
  
   
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private userFilterService: UserFilterService) {}
+  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');

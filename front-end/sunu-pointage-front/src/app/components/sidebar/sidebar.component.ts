@@ -10,10 +10,11 @@ import { AuthService } from '../../auth.service';
         <img src="assets/image.png" alt="Logo" class="sidebar-logo">
       </div>
       <ul>
-        <li><a href="#"><i class="bi bi-house-door"></i> Dashboard</a></li>
+        <li><a href="dashboard"><i class="bi bi-house-door"></i> Dashboard</a></li>
         <li><a href="/departement"><i class="bi bi-person-badge"></i> Gestion des Départements</a></li>
         <li><a href="/cohortes"><i class="bi bi-person-lines-fill"></i> Gestion des Cohortes</a></li>
         <li><a href="/gestion-cartes"><i class="bi bi-building"></i> Gestion des Cartes</a></li>
+        <li><a href="/liste"><i class="bi bi-building"></i> Liste Admin/Vigile</a></li>
         <li><a href="/attendance-list"><i class="bi bi-clock-history"></i> Historique et Pointages</a></li>
       </ul>
       <!-- Déplacer le lien de déconnexion ici -->

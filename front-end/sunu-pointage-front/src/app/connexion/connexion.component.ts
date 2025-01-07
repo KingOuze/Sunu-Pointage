@@ -70,11 +70,11 @@ export class ConnexionComponent implements OnInit {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log(`Utilisateur connecté : ${data.user.name}`);
+          console.log(`Utilisateur connecté : ${data.role}`);
           this.router.navigate(['/dashboard']);
         } else {
-          console.warn('UID inconnu ou utilisateur non trouvé.');
-          this.rfidErrorMessage = 'Carte non enregistrée. Veuillez contacter l’administrateur.';
+          console.log(data.message);
+          this.rfidErrorMessage = data.message;
         }
       })
       .catch((error) => {
@@ -115,10 +115,16 @@ export class ConnexionComponent implements OnInit {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log(`Utilisateur connecté : ${data.user.name}`);
-          this.router.navigate(['/dashboard']); // Redirection vers le tableau de bord
+          if(data.role === 'admin') {
+            console.log(`admin connecté`);
+            this.router.navigate(['/dashboard']); // Redirection vers le tableau de bord
+          } else if(data.role === 'vigile'){
+            console.log(`Vigile connecté`);
+            this.router.navigate(['/dashboard-vigile']); // Redirection vers la page des étudiants
+          }
         } else {
           this.errorMessage = 'Email ou mot de passe incorrect.';
+          console.log(data);
         }
       })
       .catch((error) => {

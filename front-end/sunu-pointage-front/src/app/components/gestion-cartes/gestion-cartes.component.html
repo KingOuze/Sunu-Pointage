@@ -14,7 +14,7 @@
               <th><input type="checkbox" /></th>
               <th>Photo</th>
               <th>Prénom et nom</th>
-              <th>État de la carte</th>
+              <th>État</th>
               <th>Email</th>
               <th>Telephone</th>
               <th>Assignation</th>
@@ -28,8 +28,8 @@
                 <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
                 <td>{{user.prenom }} {{ user.nom }}</td>
                 <td>
-                  <span *ngIf="user.etat == 'active'" style="color: green;">{{ user.etat }}</span>
-                  <span *ngIf="user.etat == 'inactive'" style="color: rgb(146, 21, 21);">{{ user.etat }}</span>
+                  <span *ngIf="user.status == 'actif'" style="color: green;">{{ user.status }}</span>
+                  <span *ngIf="user.status == 'bloque'" style="color: rgb(146, 21, 21);">{{ user.status }}</span>
                 </td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.telephone }}</td>

@@ -4,7 +4,7 @@ const { SerialPort } = require('serialport');
 const { ReadlineParser } = require('@serialport/parser-readline');
 const WebSocket = require('ws');
 const cors = require('cors');
-const bcrypt = require('bcrypt'); // Importer bcrypt
+const bcrypt = require('bcryptjs'); // Importer bcrypt
 
 // Configurer l'application Express
 const app = express();
@@ -53,16 +53,16 @@ parser.on('data', async (data) => {
   });
 
   // Vérifier si l'utilisateur existe avec cet UID
-  try {
-    const user = await User.findOne({ cardId: uid });
+ /* try {
+    const user = await User.where({ cardId: uid });
     if (user) {
-      console.log(`Utilisateur trouvé : ${user}`);
+      console.log(`Utilisateur trouvé `);
     } else {
-      console.log(`Carte non enregistrée. UID : ${uid}`);
+      console.log(`Carte non enregistrée. UID : ${user}`);
     }
   } catch (error) {
     console.error('Erreur lors de la gestion de l\'UID :', error);
-  }
+  }*/
 });
 
 
@@ -70,10 +70,17 @@ parser.on('data', async (data) => {
 // Route pour vérifier un utilisateur avec l'UID
 app.post('/api/check-uid', async (req, res) => {
   const { uid } = req.body;
+  console.log(`UID à vérifier : ${uid}`);
   try {
     const user = await User.findOne({ cardId: uid });
+
     if (user) {
-      return res.status(200).json({ success: true, role: user.role });
+      console.log(user.role);
+      if(user.role == 'admin'){
+        return res.status(200).json({ success: true, role: 'admin' });
+      } else {
+        return res.status(403).json({ success: false, message: 'Non Authorisé' });
+      }
     } else {
       return res.status(404).json({ success: false, message: 'Utilisateur non trouvé.' });
     }
@@ -89,7 +96,7 @@ app.post('/api/login', async (req, res) => {
 
   try {
     // Rechercher l'utilisateur dans la base de données par email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email});
 
     if (!user) {
       return res.status(404).json({ success: false, message: 'Utilisateur non trouvé.' });
@@ -97,10 +104,13 @@ app.post('/api/login', async (req, res) => {
 
     // Vérifier si le mot de passe correspond au mot de passe haché
     const isPasswordValid = await bcrypt.compare(password, user.password);
+console.log("Mot de passe valide:", isPasswordValid);
+
 
     if (!isPasswordValid) {
-      return res.status(401).json({ success: false, message: 'Mot de passe incorrect.' });
+      return res.status(401).json({ success: false, message: 'Mot de passe incorrect.', pass1: password, pass2: user.password });
     }
+
 
     // Si tout est valide, retourner les informations de l'utilisateur
     return res.status(200).json({

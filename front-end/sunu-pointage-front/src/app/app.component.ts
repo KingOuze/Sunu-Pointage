@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, SidebarComponent, CommonModule],  // Ajoutez RouterOutlet ici
+  imports: [RouterOutlet, FormsModule, CommonModule],  // Ajoutez RouterOutlet ici
   templateUrl: 'app.component.html', 
 })
 export class AppComponent {
@@ -19,8 +19,8 @@ export class AppComponent {
 
   constructor(private authService: AuthService){}
 
-  ngOnInit() {
+  /*ngOnInit() {
     this.role = this.authService.getUserRole(); // Récupère le rôle depuis le service
     console.log(this.role);
-  }
+  }*/
 }
