@@ -21,6 +21,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 70px; 
 }
+.error-message {
+  color: red;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
 
 .logo-container {
   display: flex;
