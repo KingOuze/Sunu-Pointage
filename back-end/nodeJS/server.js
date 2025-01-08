@@ -330,9 +330,3 @@ app.put('/update-pointage/:id', async (req, res) => {
     res.status(500).json({ success: false, message: 'Erreur serveur', error: err.message });
   }
 });
-
-
-
-
-
-
