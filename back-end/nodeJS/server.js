@@ -12,7 +12,7 @@ const fs = require('fs');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Import des modèles
 const UserModel = require('./models/User');

@@ -6,7 +6,7 @@
     <div class="content">
       <!-- Barre supérieure -->
       <div class="top-bar">
-        <input type="text" placeholder="Rechercher..." class="search-bar" />
+        <input type="text" [(ngModel)]="searchQuery"  placeholder="Rechercher email..." />
         <div class="actions">
           <label for="file-upload" class="upload-btn">
             <i class="bi bi-upload"></i> Uploader un fichier CSV
@@ -42,7 +42,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let learner of learners">
+              <tr *ngFor="let learner of paginatedPointages">
                 <td><input type="checkbox" [(ngModel)]="learner.selected" name="user-{{learner._id}}" (change)="updateSelection(learner)"></td>
                 <td>
                   <img [src]="learner.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;" />
@@ -67,10 +67,10 @@
       </div>
   
       <!-- Pagination -->
-      <div class="pagination">
-        <button>&lt;</button>
-        <span>1</span>
-        <button>&gt;</button>
+      <div class="pagination-controls">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+        <span>Page {{ currentPage }} sur {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Suivant</button>
       </div>
     </div>
   </div>

@@ -1,19 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router'; // Importez RouterModule ici
+import { RouterModule, Router } from '@angular/router'; // Importez RouterModule ici
 import { UserService } from '../services/user.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { FormsModule } from '@angular/forms';
-import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-list-admin-vigile',
   standalone: true,
-  imports: [ SidebarComponent, CommonModule, RouterModule, SweetAlert2Module, FormsModule, NgxPaginationModule], 
+  imports: [
+    SidebarComponent,
+    CommonModule,
+    RouterModule,
+    SweetAlert2Module,
+    FormsModule,
+    
+  ],
   templateUrl: './list-admin-vigile.component.html',
-  styleUrl: './list-admin-vigile.component.css'
+  styleUrl: './list-admin-vigile.component.css',
 })
 export class ListAdminVigileComponent implements OnInit{
 
@@ -21,10 +28,11 @@ export class ListAdminVigileComponent implements OnInit{
   users: any[] = [];
   errorMessage: string = '';
   searchQuery: string = '';
-  filteredUsers: any[] = [];
-  searchText: string = ''; // Texte de recherche
-  itemsPerPage: number = 5; // Nombre d'éléments par page
+  selectedDate: string = '';
   currentPage: number = 1; // Page actuelle
+  itemsPerPage: number = 5; // Nombre d'éléments par page
+ 
+
 
   
 
@@ -32,9 +40,6 @@ export class ListAdminVigileComponent implements OnInit{
   ngOnInit(): void {
     
     this.loadUsers();
-
-     // Initialiser filteredUsers avec la liste complète
-     this.filteredUsers = [...this.users]
   }
 
   loadUsers(): void {
@@ -94,24 +99,56 @@ export class ListAdminVigileComponent implements OnInit{
     this.router.navigate(['/ajouter']); // Redirection vers la route "ajoutadmin"
   }
 
-  onSearch(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const searchValue = input.value; // Type 'string'
-    console.log('Valeur recherchée :', searchValue);
-    this.searchText = searchValue; // Mettre à jour votre variable de recherche
-    this.filterUsers(); // Appeler la méthode pour filtrer la liste
+
+    // Filtrer les pointages selon la requête de recherche
+  get filteredPointages() {
+    return this.users.filter((user) => {
+      const searchTerm = this.searchQuery.toLowerCase();
+      const matricule = user.matricule.toLowerCase();
+      const nom = user.nom.toLowerCase();
+      const prenom = user.prenom.toLowerCase();
+      const email = user.email.toLowerCase();
+      return (
+        matricule.includes(searchTerm) ||
+        nom.includes(searchTerm) ||
+        prenom.includes(searchTerm) ||
+        email.includes(searchTerm)
+      );
+    });
   }
 
-  changePage(page: number): void {
-    this.currentPage = page; // Mettre à jour la page actuelle
-    this.filterUsers(); // Appeler la méthode pour filtrer la liste
+   // Calculer les pointages à afficher pour la page actuelle
+   get paginatedPointages() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredPointages.slice(startIndex, endIndex);
   }
-  filterUsers(): void {
-    this.filteredUsers = this.users.filter(user =>
-      Object.values(user).some((value: any) =>
-        value?.toString().toLowerCase().includes(this.searchText.toLowerCase())
-      )
-    );
+
+  // Total de pages
+  totalPages(): number {
+    return Math.ceil(this.filteredPointages.length / this.itemsPerPage);
   }
-  
+
+  // Passer à la page suivante
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+
+  // Passer à la page précédente
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  // Aller directement à la page
+  goToPage(page: number): void {
+    if (page > 0 && page <= this.totalPages()) {
+      this.currentPage = page;
+    }
+  }
+
+
 }

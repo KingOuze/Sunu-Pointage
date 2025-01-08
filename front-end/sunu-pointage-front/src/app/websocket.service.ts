@@ -26,7 +26,7 @@ export class WebSocketService {
     this.isConnecting = true;
 
     console.log('Tentative de connexion au WebSocket...');
-    this.socket = new WebSocket('ws://localhost:4000');
+    this.socket = new WebSocket('ws://localhost:5000');
 
     // Gestion des événements WebSocket
     this.socket.onopen = () => {

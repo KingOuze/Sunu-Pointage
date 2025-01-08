@@ -42,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let cohorte of filteredCohorte; let i = index; ">
+            <tr *ngFor="let cohorte of paginatedPointages; let i = index; ">
               <td (click)="onItemClick(cohorte)">{{ i + 1 }}</td>
               <td (click)="onItemClick(cohorte)" >{{ cohorte.nom }}</td>
               <td (click)="onItemClick(cohorte)"></td>
@@ -59,10 +59,10 @@
       </div>
   
       <!-- Pagination -->
-      <div class="pagination">
-        <button>&lt;</button>
-        <span>1</span>
-        <button>&gt;</button>
+      <div class="pagination-controls">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+        <span>Page {{ currentPage }} sur {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Suivant</button>
       </div>
     </div>
   </div>

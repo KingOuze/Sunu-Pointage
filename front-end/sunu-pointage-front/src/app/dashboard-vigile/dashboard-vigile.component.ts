@@ -89,10 +89,7 @@ export class DashboardVigileComponent implements OnInit, OnDestroy {
     }, 100); // Ajouter un léger délai pour permettre au template de se mettre à jour correctement
   }
   
-// Méthode pour naviguer vers l'historique des pointages
-goToHistoriquePointage() {
-  this.router.navigateByUrl('/historique-pointage');
-}
+
   checkinAction(): void {
     if (this.userExists) {
       console.log('Utilisateur trouvé:', this.users[0]); // Vérifiez les données de l'utilisateur
@@ -167,7 +164,10 @@ goToHistoriquePointage() {
     }
   }
 
-  logOut(){
-    this.authService.logout();
+  logout() {
+    console.log('logout');
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    this.router.navigate(['/connexion']);
   }
 }

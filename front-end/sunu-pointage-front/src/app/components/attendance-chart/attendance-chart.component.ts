@@ -31,24 +31,33 @@ export class AttendanceChartComponent implements AfterViewInit {
       const ctx = this.attendanceChart.nativeElement.getContext('2d');
       if (ctx) {
         new Chart(ctx, {
-          type: 'line',
+          type: 'bar', // Changer le type en 'bar' pour un diagramme en barre
           data: {
-            labels: ['01 Aug', '02 Aug', '03 Aug', '04 Aug', '05 Aug'],
+            labels: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan'], // Exemple de jours
             datasets: [{
-              label: 'Pointages quotidiens',
-              data: [20, 40, 30, 50, 60],
-              borderColor: '#36A2EB',
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              fill: true,
-              tension: 0.4
+              label: 'Nombre de personnes pointées',
+              data: [20, 40, 30, 50, 60], // Remplacez ces données par le nombre de personnes pointées par jour
+              backgroundColor: 'rgba(54, 162, 235, 0.6)', // Couleur des barres
+              borderColor: '#36A2EB', // Couleur des bordures des barres
+              borderWidth: 1
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-              y: { beginAtZero: true },
-              x: { grid: { display: false } }
+              y: { 
+                beginAtZero: true, // L'axe Y commence à zéro
+                title: { display: true, text: 'Nombre de personnes' }
+              },
+              x: { 
+                title: { display: true, text: 'Jour' }
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+              },
             }
           }
         });

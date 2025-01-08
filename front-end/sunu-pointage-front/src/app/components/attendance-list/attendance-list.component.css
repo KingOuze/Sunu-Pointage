@@ -52,10 +52,7 @@
     color: gray;
   }
   
-  .pagination {
-    margin-top: 10px;
-    text-align: right;
-  }
+
   .layout {
     display: flex;
   }
@@ -72,4 +69,29 @@
     flex: 1;
     padding: 20px;
   }
+
+
+  /* Pagination  Css*/
+  .pagination-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pagination-controls button {
+    padding: 5px 10px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination-controls span {
+    font-weight: bold;
+  }
+  
   

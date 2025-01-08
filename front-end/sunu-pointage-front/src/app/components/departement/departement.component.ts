@@ -94,17 +94,6 @@ calculateDepartmentCounts() {
     return this.filteredDepartement.slice(startIndex, endIndex);
   }
 
-  goToPage(page: number): void {
-    this.currentPage = page;
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.filteredDepartement.length / this.itemsPerPage);
-  }
-
-  getPageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
 
   //redirection de la liste des menbres d'un departement
   onItemClick(departement: any) {
@@ -222,6 +211,48 @@ calculateDepartmentCounts() {
 }
 
 
-
+    // Filtrer les pointages selon la requête de recherche
+    get filteredPointages() {
+      return this.departements.filter((departement) => {
+        const searchTerm = this.searchQuery.toLowerCase();
+        const nom = departement.nom.toLowerCase();
+        return (
+          nom.includes(searchTerm) 
+        );
+      });
+    }
+  
+     // Calculer les pointages à afficher pour la page actuelle
+     get paginatedPointages() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.filteredPointages.slice(startIndex, endIndex);
+    }
+  
+    // Total de pages
+    totalPages(): number {
+      return Math.ceil(this.filteredPointages.length / this.itemsPerPage);
+    }
+  
+    // Passer à la page suivante
+    nextPage(): void {
+      if (this.currentPage < this.totalPages()) {
+        this.currentPage++;
+      }
+    }
+  
+    // Passer à la page précédente
+    previousPage(): void {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    }
+  
+    // Aller directement à la page
+    goToPage(page: number): void {
+      if (page > 0 && page <= this.totalPages()) {
+        this.currentPage = page;
+      }
+    }
 
 }

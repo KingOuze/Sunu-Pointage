@@ -7,8 +7,6 @@ import { User } from '../../models/user';
 import { FormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from "sweetalert2";
-import { NgxPaginationModule } from 'ngx-pagination';
-import { UserFilterService } from '../../services/user-filter.service';
 
 @Component({
   selector: 'app-listeaprenant',
@@ -19,11 +17,14 @@ import { UserFilterService } from '../../services/user-filter.service';
 })
 export class ListeaprenantComponent {
   
+  searchQuery: string = '';
+  selectedDate: string = '';
   cohorteId: string = '';
   learners: User[] = [];
   selectedFile: File | undefined;
- // currentPage: number = 1; // Page actuelle
-  //filteredUsers =  [...this.learners];
+ 
+  currentPage: number = 1; // Page actuelle
+  itemsPerPage: number = 5; // Nombre d'éléments par page
  
   
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
@@ -205,5 +206,55 @@ export class ListeaprenantComponent {
       learner.selected = !learner.selected; // Mettez à jour la sélection
   }
 
+   
+      // Filtrer les pointages selon la requête de recherche
+      get filteredPointages() {
+        return this.learners.filter((learner) => {
+          const searchTerm = this.searchQuery.toLowerCase();
+          const matricule = learner.matricule?.toLowerCase();
+          const nom = learner.nom.toLowerCase();
+          const prenom = learner.prenom.toLowerCase();
+          const email = learner.email.toLowerCase();
+          return (
+            matricule?.includes(searchTerm) ||
+            nom.includes(searchTerm) ||
+            prenom.includes(searchTerm) ||
+            email.includes(searchTerm)
+          );
+        });
+      }
+    
+       // Calculer les pointages à afficher pour la page actuelle
+       get paginatedPointages() {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.filteredPointages.slice(startIndex, endIndex);
+      }
+    
+      // Total de pages
+      totalPages(): number {
+        return Math.ceil(this.filteredPointages.length / this.itemsPerPage);
+      }
+    
+      // Passer à la page suivante
+      nextPage(): void {
+        if (this.currentPage < this.totalPages()) {
+          this.currentPage++;
+        }
+      }
+    
+      // Passer à la page précédente
+      previousPage(): void {
+        if (this.currentPage > 1) {
+          this.currentPage--;
+        }
+      }
+    
+      // Aller directement à la page
+      goToPage(page: number): void {
+        if (page > 0 && page <= this.totalPages()) {
+          this.currentPage = page;
+        }
+      }
 
 }

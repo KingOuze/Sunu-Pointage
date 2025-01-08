@@ -4,7 +4,7 @@
     <div class="content">
       <div class="header">
         <h2>Listes des Utilisateurs</h2>
-        <input type="text" placeholder="Rechercher..." class="search-bar" />
+        <input type="text" [(ngModel)]="searchQuery"  placeholder="Rechercher email..." />
       </div>
   
       <div class="table-container">
@@ -22,7 +22,7 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let user of users">
+            <ng-container *ngFor="let user of paginatedPointages " >
               <tr *ngIf="user.role !== 'vigile'">
                 <td><input type="checkbox" /></td>
                 <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
@@ -56,10 +56,10 @@
         </table>
       </div>
   
-      <div class="pagination">
-        <button class="previous">Previous</button>
-        <span>Page 1 of 10</span>
-        <button class="next">Next</button>
+      <div class="pagination-controls">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+        <span>Page {{ currentPage }} sur {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Suivant</button>
       </div>
     </div>
   </div>

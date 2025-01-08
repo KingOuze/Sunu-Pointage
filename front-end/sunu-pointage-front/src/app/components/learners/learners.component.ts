@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-learners',
   standalone:true,
-  imports: [SidebarComponent,CommonModule, RouterModule, FormsModule, SweetAlert2Module ],// Ajoutez FormsModule ici],
+  imports: [SidebarComponent, CommonModule, RouterModule, FormsModule, SweetAlert2Module],// Ajoutez FormsModule ici],
   templateUrl: './learners.component.html',
   styleUrls: ['./learners.component.css']
 })
@@ -21,12 +21,14 @@ export class LearnersComponent implements OnInit{
   departementId: String = '';
   learners: User[] = [];
   errorMessage: string = '';
-  currentPage: number = 1;
-  itemsPerPage: number = 5;
-  searchQuery: string = ''; // Texte de recherche
+
+  selectedDate: string = '';
+  searchQuery: string = '';
   messageService: any;
   message: any;
   selectedFile: File | undefined;
+ currentPage: number = 1; // Page actuelle
+ itemsPerPage: number = 5; // Nombre d'éléments par page
 
 
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
@@ -71,25 +73,6 @@ export class LearnersComponent implements OnInit{
       learner.prenom.toLowerCase().includes(lowerCaseQuery) ||
       learner.email.toLowerCase().includes(lowerCaseQuery)
     );
-  }
-
-   // Pagination des utilisateurs filtrés
-   get paginatedUsers() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredUsers.slice(startIndex, endIndex);
-  }
-
-  goToPage(page: number): void {
-    this.currentPage = page;
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.filteredUsers.length / this.itemsPerPage);
-  }
-
-  getPageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   deleteUser(id: String): void {
@@ -229,4 +212,53 @@ updateSelection(learner: User) {
 }
 
 
+      // Filtrer les pointages selon la requête de recherche
+      get filteredPointages() {
+        return this.learners.filter((learner) => {
+          const searchTerm = this.searchQuery.toLowerCase();
+          const matricule = learner.matricule?.toLowerCase();
+          const nom = learner.nom.toLowerCase();
+          const prenom = learner.prenom.toLowerCase();
+          const email = learner.email.toLowerCase();
+          return (
+            matricule?.includes(searchTerm) ||
+            nom.includes(searchTerm) ||
+            prenom.includes(searchTerm) ||
+            email.includes(searchTerm)
+          );
+        });
+      }
+    
+       // Calculer les pointages à afficher pour la page actuelle
+       get paginatedPointages() {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.filteredPointages.slice(startIndex, endIndex);
+      }
+    
+      // Total de pages
+      totalPages(): number {
+        return Math.ceil(this.filteredPointages.length / this.itemsPerPage);
+      }
+    
+      // Passer à la page suivante
+      nextPage(): void {
+        if (this.currentPage < this.totalPages()) {
+          this.currentPage++;
+        }
+      }
+    
+      // Passer à la page précédente
+      previousPage(): void {
+        if (this.currentPage > 1) {
+          this.currentPage--;
+        }
+      }
+    
+      // Aller directement à la page
+      goToPage(page: number): void {
+        if (page > 0 && page <= this.totalPages()) {
+          this.currentPage = page;
+        }
+      }
 }

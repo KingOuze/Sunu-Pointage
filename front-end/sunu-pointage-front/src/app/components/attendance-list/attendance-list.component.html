@@ -10,50 +10,39 @@
           placeholder="Quick Search..." 
           [(ngModel)]="searchQuery" 
         />
-        <input 
-          type="date" 
-          [(ngModel)]="selectedDate" 
-        />
+      
       </div>
   
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Employé</th>
-            <th>Role</th>
-            <th>Department</th>
+            <th>Matricule</th>
+            <th>Nom</th>
+            <th>Prénom</th>
             <th>Date</th>
-            <th>Status</th>
-            <th>Heure d'arrivée</th>
+            <th>Check-In</th>
+            <th>Check-Out</th>
+            <th>Etat</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let record of attendanceRecords | filter: searchQuery : 'employee'">
-            <td>{{ record.id }}</td>
-            <td>{{ record.employee }}</td>
-            <td>{{ record.role }}</td>
-            <td>{{ record.department }}</td>
-            <td>{{ record.date }}</td>
-            <td>
-              <span
-                [ngClass]="{
-                  'status-present': record.status === 'Présent',
-                  'status-absent': record.status === 'Absent',
-                  'status-late': record.status === 'En retard',
-                  'status-telework': record.status === 'Télétravail'
-                }"
-              >
-                {{ record.status }}
-              </span>
-            </td>
-            <td>{{ record.arrivalTime }}</td>
+          <tr *ngFor="let pointage of paginatedPointages ">
+
+            <td>{{ pointage.user_id.matricule }}</td>
+            <td>{{ pointage.user_id.nom }}</td>
+            <td>{{ pointage.user_id.prenom }}</td>
+            <td>{{ pointage.date | date:'shortDate' }}</td>
+            <td>{{ pointage.checkin | date:'shortTime' }}</td>
+            <td>{{ pointage.checkout | date:'shortTime' }}</td>
+            <td *ngIf="pointage.etat == 'à l\'heure'">{{ pointage.etat }}</td>
           </tr>
         </tbody>
       </table>
   
-      <div class="pagination">
-        <span>Page 1 of 100</span>
+      <div class="pagination-controls">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+        <span>Page {{ currentPage }} sur {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Suivant</button>
       </div>
     </div>
   </div>
