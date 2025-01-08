@@ -22,7 +22,7 @@ mongoose.connect('mongodb://localhost:27017/pointage', {
 // Schéma de l'utilisateur
 const UserSchema = new mongoose.Schema({
   uid: { type: String, unique: true, required: true },
-  name: String,
+  username: String,
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['admin', 'vigile'], required: true },

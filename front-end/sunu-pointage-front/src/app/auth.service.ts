@@ -14,10 +14,11 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/auth'; // URL de votre backend
+  private apiUrl = 'http://localhost:3000'; // URL de votre backend
 
   constructor(private http: HttpClient) { }
-
+  message: string = '';
+  errorMessage: string = '';
   // Connexion avec email et mot de passe
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
@@ -64,6 +65,9 @@ logout(): Observable<any> {
   // Vérifier si le mot de passe correspond à l'email
   checkPassword(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/check-password`, { email, password });
+  }
+  sendResetLink(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
   }
 }
  

@@ -82,6 +82,13 @@ export class ConnexionComponent implements OnInit {
         this.rfidErrorMessage = 'Une erreur s’est produite. Veuillez réessayer.';
       });
   }
+  validatePassword() {
+    if (this.password.length >= 6) {
+      this.errorMessage = '';
+    } else {
+      this.errorMessage = 'Le mot de passe est trop court.';
+    }
+  }
 
   // Connexion par email et mot de passe
   loginWithEmail(): void {
