@@ -49,7 +49,7 @@ const afficherUtilisateurs = async () => {
 
 // Communication avec Arduino
 const port = new SerialPort({
-  path: '/dev/ttyACM0', // Remplacez par le port série de votre Arduino
+  path: '/dev/ttyACM1', // Remplacez par le port série de votre Arduino
   baudRate: 9600,
 });
 
