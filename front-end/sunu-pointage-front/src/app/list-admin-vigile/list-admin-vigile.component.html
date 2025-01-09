@@ -1,69 +1,48 @@
 <div class="layout">
-    <app-sidebar></app-sidebar>
+  <app-sidebar></app-sidebar>
+  <div class="container mt-4">
+    <h2>Liste des utilisateurs</h2>
   
-    <div class="content">
-      <div class="header">
-        <h2>Listes des Utilisateurs</h2>
-        <div class="filter-container">
-          <input
-          type="text"
-          placeholder="Recherche par matricule, nom, prénom, ou date..."
-          [(ngModel)]="searchQuery"
-          />
-        </div>
-        <button class="add-btn" (click)="addUser()">
-            <i class="bi bi-plus-circle"></i>
-              Ajouter          
-          </button>
-      </div>
+    <!-- Champ de recherche -->
+    <div class="form-group">
   
-      <div class="table-container">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Photo</th>
-              <th>Prénom et nom</th>
-              <th>État de la carte</th>
-              <th>Email</th>
-              <th>Telephone</th>
-              <th>Assignation</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let user of paginatedPointages">
-              <tr *ngIf="user.role == 'vigile' || user.role == 'admin'">
-                <td><input type="checkbox" [(ngModel)]="user.selected" name="user-{{user._id}}" (click)="updateSelection(user)"></td>                <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
-                <td>{{user.prenom }}</td>
-                <td> {{ user.nom }} </td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.telephone }}</td>
-                <td>{{ user.role }}</td>
-                <td>
-                    <a [routerLink]="['/modification', 'admin', user._id]" style="text-decoration: none; color: inherit;">
-                        <i class="bi bi-pencil edit-icon"></i>
-                      </a>
-                      <i class="bi bi-trash delete-icon" (click)="deleteUser(user._id)" ></i>
-                  </td>
-                <td *ngIf="users == null">
-                  Aucune utilisateur
-                </td>
-              </tr>
-            </ng-container>
-            
-          </tbody>
-        </table>
-        <br>
-        <br>
-        <button type="submit" *ngIf="hasSelected()" style="background-color: white; color: rgb(139, 22, 22);" >Supprimer Sélectionnés</button>
-        
-        <div class="pagination-controls">
-          <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
-          <span>Page {{ currentPage }} sur {{ totalPages() }}</span>
-          <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Suivant</button>
-        </div>
-      </div>
-     
+      <input
+        id="search"
+        class="form-control"
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Rechercher un utilisateur par nom"
+      />
+    </div>
+  
+    <!-- Table des utilisateurs -->
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.id }}</td>
+          <td>{{ user.nom }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Pagination -->
+    <ngb-pagination
+      [collectionSize]="totalUsers"
+      [(page)]="currentPage"
+      [pageSize]="pageSize"
+      (pageChange)="onPageChange($event)"
+      aria-label="Page navigation"
+    ></ngb-pagination>
   </div>
-  
+</div>
+
