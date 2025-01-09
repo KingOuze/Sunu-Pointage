@@ -8,6 +8,7 @@ import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { FormsModule } from '@angular/forms';
 
 
+
 @Component({
   selector: 'app-list-admin-vigile',
   standalone: true,
