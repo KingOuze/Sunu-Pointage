@@ -21,7 +21,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th><input type="checkbox" /></th>
+              <th>#</th>
               <th>Photo</th>
               <th>Prénom et nom</th>
               <th>État de la carte</th>
@@ -34,8 +34,7 @@
           <tbody>
             <ng-container *ngFor="let user of paginatedPointages">
               <tr *ngIf="user.role == 'vigile' || user.role == 'admin'">
-                <td><input type="checkbox" /></td>
-                <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
+                <td><input type="checkbox" [(ngModel)]="user.selected" name="user-{{user._id}}" (click)="updateSelection(user)"></td>                <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
                 <td>{{user.prenom }}</td>
                 <td> {{ user.nom }} </td>
                 <td>{{ user.email }}</td>
@@ -55,7 +54,10 @@
             
           </tbody>
         </table>
-
+        <br>
+        <br>
+        <button type="submit" *ngIf="hasSelected()" style="background-color: white; color: rgb(139, 22, 22);" >Supprimer Sélectionnés</button>
+        
         <div class="pagination-controls">
           <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
           <span>Page {{ currentPage }} sur {{ totalPages() }}</span>

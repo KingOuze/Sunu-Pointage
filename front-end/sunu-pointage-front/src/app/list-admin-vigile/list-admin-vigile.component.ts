@@ -68,7 +68,7 @@ export class ListAdminVigileComponent implements OnInit{
       cancelButtonColor: '#d33',
       confirmButtonText: 'Oui, supprimer!'
     }).then((result) => {
-      if(result){
+      if(result.isConfirmed){
         this.userService.deleteUser(id).subscribe({
           next: (res) => {
             Swal.fire({
@@ -80,7 +80,7 @@ export class ListAdminVigileComponent implements OnInit{
           });
           this.loadUsers();
   
-        }, error: (error) => {
+        } , error: (error) => {
           Swal.fire({
             icon: 'error',
             title: 'Erreur',
@@ -94,6 +94,61 @@ export class ListAdminVigileComponent implements OnInit{
   
     })
  }
+
+
+     hasSelected(): boolean {
+       return this.users.some(user => user.selected);
+   }
+   
+   onDeleteSelected() {
+       const selectedIds = this.users.filter(user => user.selected).map(user => user._id);
+       if (selectedIds.length > 0) {
+       const swalWithBootstrapButtons = Swal.mixin({
+         customClass: {
+           confirmButton: "btn btn-success",
+           cancelButton: "btn btn-danger"
+         },
+         buttonsStyling: false
+       });
+       swalWithBootstrapButtons.fire({
+         title: "Etes vous sur?",
+         text: "Voulez-vous vraiment supprimer cette Utilisateur!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonText: "OUI!",
+         cancelButtonText: "No, retour!",
+         reverseButtons: true
+       }).then((result) => {
+         if (result.isConfirmed) {
+           this.userService.deleteMultipleUsers(selectedIds).subscribe({
+             next: (response) => {
+             
+               Swal.fire({
+                 title: "Supprimé!",
+                 text: "Suppression Reussie",
+                 icon: "success"
+               });
+               this.loadUsers(); // Recharge la liste après suppression
+             },
+             error: (err) => {
+               Swal.fire({
+                 icon: "error",
+                 title: "Erreur...",
+                 text: "Erreur lors de la suppression!",
+               });
+               console.error(err);
+             }
+           });
+          
+         }
+       });      
+           
+      } 
+   }
+
+  updateSelection(user: any) {
+       user.selected = !user.selected; // Mettez à jour la sélection
+   }
 
  addUser() {
     this.router.navigate(['/ajouter']); // Redirection vers la route "ajoutadmin"

@@ -114,7 +114,7 @@ calculateDepartmentCounts() {
               Swal.fire({
                 icon: "error",
                 title: "Erreur",
-                text: "Le Cohorte ne peut pas être supprimé car il a ${count} etudiants.",
+                text: "Le departement ne peut pas être supprimé car il a " +count.count +" etudiants.",
               });
         } else {
           const swalWithBootstrapButtons = Swal.mixin({
@@ -151,13 +151,6 @@ calculateDepartmentCounts() {
                   });
                   console.error(err);
                 }
-              });
-            } else {
-              // Si le département a des employés, afficher un message d'erreur
-              Swal.fire({
-                icon: "error",
-                title: "Erreur...",
-                text: "Erreur lors de la suppression!",
               });
             }
           });

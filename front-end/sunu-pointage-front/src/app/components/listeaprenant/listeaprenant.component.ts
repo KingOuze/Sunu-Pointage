@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // Importez RouterModule ici
@@ -42,11 +42,7 @@ export class ListeaprenantComponent {
     });
     this.loadUsersByCohorte(this.cohorteId);
 
-    /*this.userFilterService.searchTerm$.subscribe((term) => {
-      this.filteredUsers = this.learners.filter((learner) =>
-        learner.nom.toLowerCase().includes(term.toLowerCase())
-      );
-    });*/
+   
   }
 
   loadUsersByCohorte(cohorteId: String): void {

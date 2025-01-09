@@ -52,8 +52,7 @@ export class ModificationComponent {
       }
     });
 
-    this.getDonneesDepartement(this.name);
-    this.getDonneesCohort(this.name);
+
     
   }
 
@@ -63,7 +62,7 @@ export class ModificationComponent {
     this.userService.getUserById(id).subscribe({
       next: (data) => {
         this.user = data.user;
-        
+        this.getFonction(this.user.role);      
       },
       error: (err) => {
         Swal.fire({
@@ -77,7 +76,15 @@ export class ModificationComponent {
     
   }
 
-  getDonneesDepartement(id: String){
+  getFonction(role: String) {
+    if (role === 'etudiant') {
+      this.getDonneesCohort();
+    } else if (role === 'employe') {
+      this.getDonneesDepartement();
+    }
+  }
+
+  getDonneesDepartement(){
     this.userService.getDepartements().subscribe({
       next: (data) => {
         this.donnees = data.departements;
@@ -93,7 +100,7 @@ export class ModificationComponent {
     });
   }
 
-  getDonneesCohort(id: String){
+  getDonneesCohort(){
     this.userService.getCohortes().subscribe({
       next: (data) => {
         this.donnees = data.cohortes;
@@ -123,9 +130,6 @@ export class ModificationComponent {
 
   onSubmit(): void {
 
-    console.log(this.user.cohorte);
-    console.log(this.user.departement);
-    console.log(this.user);
     if(this.base64Image !== null) {
       this.user.photo = this.base64Image;
     } else {
