@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('users', UserSchema);
 
 // Configurer le port série pour l'Arduino
-const port = new SerialPort({ path: '/dev/ttyUSB0', baudRate: 9600 });
+const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 9600 });
 const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
 // Serveur WebSocket

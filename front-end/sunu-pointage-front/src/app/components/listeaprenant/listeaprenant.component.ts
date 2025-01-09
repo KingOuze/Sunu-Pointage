@@ -33,7 +33,7 @@ export class ListeaprenantComponent {
       const id = params.get('id');
       if (id !== null) {
           this.cohorteId = id; // Assignation seulement si ce n'est pas null
-          console.log(this.cohorteId);
+          
       } else {
           // Gérer le cas où l'ID est null
           console.warn('ID du membre non trouvé');
@@ -157,6 +157,7 @@ export class ListeaprenantComponent {
   }
   
   onDeleteSelected() {
+    console.log('Deleting selected');
       const selectedIds = this.learners.filter(learner => learner.selected).map(learner => learner._id);
       if (selectedIds.length > 0) {
       const swalWithBootstrapButtons = Swal.mixin({
@@ -182,7 +183,9 @@ export class ListeaprenantComponent {
               Swal.fire({
                 title: "Supprimé!",
                 text: "Suppression Reussie",
-                icon: "success"
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500
               });
               this.loadUsersByCohorte(this.cohorteId); // Recharge la liste après suppression
             },
@@ -190,7 +193,9 @@ export class ListeaprenantComponent {
               Swal.fire({
                 icon: "error",
                 title: "Erreur...",
-                text: "Erreur lors de la suppression!",
+                text: err.message,
+                showConfirmButton: false,
+                timer: 1500
               });
               console.error(err);
             }

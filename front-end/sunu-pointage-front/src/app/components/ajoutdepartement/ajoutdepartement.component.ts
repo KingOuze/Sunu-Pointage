@@ -78,7 +78,7 @@ export class AjoutdepartementComponent {
             Swal.fire({
               icon: "error",
               title: "Erreur",
-              text: "Erreur lors de la creation du Cohorte",
+              text: err.error.message,
             });
 
             console.error(err);

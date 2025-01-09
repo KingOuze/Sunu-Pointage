@@ -18,7 +18,7 @@
       <div class="user-info-card">
         <h5>Informations de l'utilisateur</h5>
         <div class="user-info">
-          <img *ngIf="users[0]?.photo" [src]="'http://localhost:3000' + users[0]?.photo" alt="User Image">
+          <img *ngIf="users[0]?.photo" [src]="users[0]?.photo" alt="User Image">
           <div class="info-row">
             <span class="info-label">Matricule:</span>
             <span class="info-value">{{ users[0]?.matricule }}</span>

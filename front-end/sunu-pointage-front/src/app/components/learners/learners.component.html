@@ -43,7 +43,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let learner of paginatedPointages">
-                <td><input type="checkbox" [(ngModel)]="learner.selected" name="user-{{learner._id}}" (change)="updateSelection(learner)"></td>
+                <td><input type="checkbox" [(ngModel)]="learner.selected" name="user-{{learner._id}}" (click)="updateSelection(learner)"></td>
                 <td>
                   <img [src]="learner.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;" />
                 </td>
@@ -62,7 +62,7 @@
           </table>
           <br>
           <br>
-          <button type="submit" *ngIf="hasSelected()" style="background-color: white; color: rgb(139, 22, 22);">Supprimer Sélectionnés</button>
+          <button type="submit" *ngIf="hasSelected()" style="background-color: white; color: rgb(139, 22, 22);" (click)="onDeleteSelected()">Supprimer Sélectionnés</button>
         </form>
       </div>
   

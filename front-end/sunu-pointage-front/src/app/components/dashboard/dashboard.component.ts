@@ -33,7 +33,6 @@ export class DashboardComponent {
     this.userService.getUsersByRole('employe').subscribe({
       next:(response) => {
         this.countEmployes = response.users.length;
-        console.log(this.countEmployes);
       },
       error: (err) => {
         Swal.fire({
@@ -62,6 +61,7 @@ export class DashboardComponent {
     });
   }
 
+  
   onInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input) {

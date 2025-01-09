@@ -99,6 +99,8 @@ export class ModifierAutreComponent {
             icon: "success",
             title: "Succès",
             text: "Modification Reussie!",
+            showConfirmButton: false,
+            timer: 1500
           });
           this.router.navigate(['/departement']); 
         },
@@ -106,7 +108,7 @@ export class ModifierAutreComponent {
           Swal.fire({
             icon: "error",
             title: "Erreur...",
-            text: "Erreur lors de la modification!",
+            text: err.error.message,
           });
           console.error(err);
         }
@@ -118,6 +120,8 @@ export class ModifierAutreComponent {
             icon: "success",
             title: "Succès",
             text: "Modification Reussie!",
+            showConfirmButton: false,
+            timer: 1500
           });
           this.router.navigate(['/cohortes']); 
         },
@@ -125,7 +129,7 @@ export class ModifierAutreComponent {
           Swal.fire({
             icon: "error",
             title: "Erreur...",
-            text: "Erreur lors de la modification!",
+            text: err.error.message,
           });
           console.error(err);
         }

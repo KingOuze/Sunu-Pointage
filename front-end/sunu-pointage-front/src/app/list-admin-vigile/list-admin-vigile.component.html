@@ -34,7 +34,7 @@
           <tbody>
             <ng-container *ngFor="let user of paginatedPointages">
               <tr *ngIf="user.role == 'vigile' || user.role == 'admin'">
-                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" [(ngModel)]="user.selected" name="user-{{user._id}}" (click)="updateSelection(user)"></td>
                 <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
                 <td>{{user.prenom }}</td>
                 <td> {{ user.nom }} </td>

@@ -162,8 +162,9 @@ export class LearnersComponent implements OnInit{
 }
 
 onDeleteSelected() {
+  console.log("delete many selected");
    const selectedIds = this.learners.filter(learner => learner.selected).map(learner => learner._id);
-         if (selectedIds.length <= 0) {
+         if (selectedIds.length > 0) {
          const swalWithBootstrapButtons = Swal.mixin({
            customClass: {
              confirmButton: "btn btn-success",
@@ -173,7 +174,7 @@ onDeleteSelected() {
          });
          swalWithBootstrapButtons.fire({
            title: "Etes vous sur?",
-           text: "Voulez-vous vraiment supprimer cette Utilisateur!",
+           text: "Voulez-vous vraiment supprimer ces Utilisateurs!",
            icon: "warning",
            showCancelButton: true,
            confirmButtonText: "OUI!",
@@ -187,7 +188,9 @@ onDeleteSelected() {
                  Swal.fire({
                    title: "Supprimé!",
                    text: "Suppression Reussie",
-                   icon: "success"
+                   icon: "success",
+                   showConfirmButton: false,
+                   timer: 1500
                  });
                  this.loadUsersByDepartement(this.departementId); // Recharge la liste après suppression
                },

@@ -198,7 +198,7 @@ parser.on('data', async (data) => {
       return;
     }
 
-    if (user.status === 'bloqué') {
+    if (user.status === 'bloque') {
       console.log('Accès refusé, utilisateur bloqué :', user.nom);
       // Répondre à l'Arduino avec "BLOCKED"
       port.write('BLOCKED\n');

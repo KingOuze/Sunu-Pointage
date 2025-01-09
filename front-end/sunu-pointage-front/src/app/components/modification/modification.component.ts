@@ -69,7 +69,7 @@ export class ModificationComponent {
         Swal.fire({
           icon: "error",
           title: "Erreur",
-          text: "Erreur lors du chargement des utilisateurs",
+          text: err.error.message,
         });
         console.error(err);
       }
@@ -138,6 +138,8 @@ export class ModificationComponent {
             icon: "success",
             title: "Succès",
             text: "Modification Reussie!",
+            showConfirmButton: false,
+            timer: 1500
           });
           this.retourVersListe(response.user.role); 
         },
@@ -145,7 +147,7 @@ export class ModificationComponent {
           Swal.fire({
             icon: "error",
             title: "Erreur",
-            text: "Erreur lors de la modification!",
+            text: err.error.message,
           });
           console.error(err);
         }

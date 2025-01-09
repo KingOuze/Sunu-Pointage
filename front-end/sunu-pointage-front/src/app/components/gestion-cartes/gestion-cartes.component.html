@@ -1,66 +1,100 @@
 <div class="main-container">
-    <app-sidebar></app-sidebar>
-  
-    <div class="content">
-      <div class="header">
-        <h2>Listes des Utilisateurs</h2>
-        <input type="text" [(ngModel)]="searchQuery"  placeholder="Rechercher email..." />
-      </div>
-  
-      <div class="table-container">
-        <table class="table">
-          <thead>
-            <tr>
-              <th><input type="checkbox" /></th>
-              <th>Photo</th>
-              <th>Prénom et nom</th>
-              <th>État</th>
-              <th>Email</th>
-              <th>Telephone</th>
-              <th>Assignation</th>
-              <th>Actions</th>
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+    <div class="header">
+      <h2>Listes des Utilisateurs</h2>
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher email..." />
+    </div>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Photo</th>
+            <th>Prénom et nom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>État</th>
+            <th>Assignation</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let user of paginatedPointages">
+            <tr *ngIf="user.role !== 'vigile'">
+              <td>{{ user.id }}</td>
+              <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
+              <td>{{ user.prenom }} {{ user.nom }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.telephone }}</td>
+              <td>
+                <span *ngIf="user.status == 'actif'" style="color: green;">
+                  <button class="btn btn-success" (click)="switchStatus(user._id, user.status)">
+                    {{ user.status }}
+                  </button>
+                </span>
+                <span *ngIf="user.status == 'bloque'" style="color: rgb(146, 21, 21);">
+                  <button class="btn btn-danger" (click)="switchStatus(user._id, user.status)">
+                    {{ user.status }}
+                  </button>
+                </span>
+              </td>
+              <td *ngIf="user.cardId == null">
+                <button class="assign-button" [routerLink]="['/assigner-carte', user._id]">Assigner</button>
+              </td>
+              <td *ngIf="user.cardId != null">{{ user.cardId }}</td>
+              <td *ngIf="user.cardId != null ">
+                <button class="delete-button" (click)="deleteAssign(user._id)">
+                  <span>&#x2716;</span>
+                </button>
+              </td>
+              <td *ngIf="user.cardId == null">Aucune</td>
+
+              <!-- Ajouter un bouton pour ouvrir le modal -->
+              <td>
+                <button class="btn btn-info" (click)="openModal(user)">Voir les détails</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let user of paginatedPointages " >
-              <tr *ngIf="user.role !== 'vigile'">
-                <td><input type="checkbox" /></td>
-                <td><img [src]="user.photo" alt="Photo utilisateur" style="width: 50px; height: 50px; object-fit: cover;"/></td>
-                <td>{{user.prenom }} {{ user.nom }}</td>
-                <td>
-                  <span *ngIf="user.status == 'actif'" style="color: green;">{{ user.status }}</span>
-                  <span *ngIf="user.status == 'bloque'" style="color: rgb(146, 21, 21);">{{ user.status }}</span>
-                </td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.telephone }}</td>
-                <td *ngIf="user.cardId == null">
-                  <button class="assign-button" [routerLink]="['/assigner-carte', user._id]">
-                    Assigner
-                  </button>
-                </td>
-                <td *ngIf="user.cardId != null">
-                  {{ user.cardId }}
-                </td>
-                <td *ngIf="user.cardId != null ">
-                  <button class="delete-button" (click)="deleteAssign(user._id)">
-                    <span>&#x2716;</span>
-                  </button>
-                </td>
-                <td *ngIf="user.cardId == null">
-                  Aucune
-                </td>
-              </tr>
-            </ng-container>
-            
-          </tbody>
-        </table>
-      </div>
-  
-      <div class="pagination-controls">
-        <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
-        <span>Page {{ currentPage }} sur {{ totalPages() }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Suivant</button>
-      </div>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-controls">
+      <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+      <span>Page {{ currentPage }} sur {{ totalPages() }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages()">Suivant</button>
     </div>
   </div>
-  
+
+
+  <!-- Modal pour afficher les détails d'un utilisateur -->
+<!-- Modal pour afficher les détails d'un utilisateur -->
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5 class="modal-title">Détails de l'utilisateur</h5>
+      <button type="button" class="close-button" (click)="closeModal()">&#x2716;</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="selectedUser">
+        <p><strong>Matricule:</strong> {{ selectedUser.matricule }}</p>
+        <p><strong>Nom:</strong> {{ selectedUser.nom }} {{ selectedUser.prenom }}</p>
+        <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+        <p><strong>Téléphone:</strong> {{ selectedUser.telephone || 'Non spécifié' }}</p>
+        <p><strong>Status:</strong> {{ selectedUser.status }}</p>
+        <p *ngIf="selectedUser.role == 'employe'"><strong>Departement:</strong> {{ donnees.nom }}</p>
+        <p *ngIf="selectedUser.role == 'employe'"><strong>Fonction:</strong> {{ donnees.nom }}</p>
+        <p *ngIf="selectedUser.role == 'etudiant'"><strong>Cohorte:</strong> {{ donnees.nom }}</p>
+        <p><strong>Assignation de carte:</strong> {{ selectedUser.cardId || 'Aucune' }}</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+</div>

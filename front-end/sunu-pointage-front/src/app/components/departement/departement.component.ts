@@ -139,7 +139,9 @@ calculateDepartmentCounts() {
                   swalWithBootstrapButtons.fire({
                     title: "Supprimé!",
                     text: "Suppression Reussie",
-                    icon: "success"
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
                   });
                   this.departements = this.departements.filter(departement => departement._id !== id);
                 },

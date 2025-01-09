@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import {  Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router'; // Importez RouterModule ici
@@ -14,17 +14,25 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './gestion-cartes.component.html',
   styleUrl: './gestion-cartes.component.css'
 })
-export class GestionCartesComponent {
+export class GestionCartesComponent implements OnInit {
 
+
+  @Input() selectedUser: any;  // Reçoit l'utilisateur sélectionné
+  @Output() closeModalEvent = new EventEmitter<void>();  // Émet un événement pour fermer le modal
+
+
+ 
+  isModalOpen = false;
   searchQuery: string = '';
   selectedDate: string = '';
   users: any[] = [];
   errorMessage: string = '';
-
+  donnees: any | null = null;
   currentPage: number = 1; // Page actuelle
   itemsPerPage: number = 5; // Nombre d'éléments par page
 
   constructor(private userService: UserService) {}
+ 
   ngOnInit(): void {
     
     this.loadUsers();
@@ -73,8 +81,6 @@ export class GestionCartesComponent {
             icon: 'error',
             title: 'Erreur',
             text: 'Erreur lors de la suppression de la carte',
-            showConfirmButton: false,
-            timer: 1500
           });
         }
       })
@@ -82,6 +88,73 @@ export class GestionCartesComponent {
   
     })
  }
+
+ switchStatus(id: String, status: String): void {
+   this.userService.switchStatus(id, status).subscribe({
+     next: (res) => {
+       Swal.fire({
+         icon:'success',
+         title: 'Changement effectué!',
+         text: 'La carte a été changée avec succès.',
+         showConfirmButton: false,
+         timer: 1500
+     });
+     this.loadUsers();
+     },
+     error: (err) => {  
+       console.error(err);
+       Swal.fire({
+         icon: 'error',
+         title: 'Erreur',
+         text: 'Erreur lors du changement de la carte',
+       });
+      }
+ })
+}
+
+getDepartementById(id: String){
+  this.userService.getDepartementById(id).subscribe({
+    next: (data) => {
+      this.donnees = data.departement;
+      console.log(this.donnees)
+    },
+    error: (err) => {
+      console.error(err);
+    }
+  });
+}
+
+getCohortsById(id:String){
+  this.userService.getCohortById(id).subscribe({
+    next: (data) => {
+      this.donnees = data.cohorte;
+      console.log(this.donnees)
+    },
+    error: (err) => {
+      console.error(err);
+    }
+  });
+}
+
+ // Ouvre le modal
+ openModal(user: any) {
+  this.selectedUser = user;
+  if(this.selectedUser.role === 'employe'){
+    this.getDepartementById(user.departement);
+  } else if(this.selectedUser.role === 'etudiant'){
+    this.getCohortsById(user.cohorte);
+  }
+  
+  this.isModalOpen = true;
+}
+
+// Ferme le modal
+closeModal() {
+  this.isModalOpen = false;
+  this.selectedUser = null;  // Déselectionne l'utilisateur sélectionné
+  this.closeModalEvent.emit();  // Émet un événement pour informer le parent que le modal a été fermé
+}
+    
 
 
      // Filtrer les pointages selon la requête de recherche

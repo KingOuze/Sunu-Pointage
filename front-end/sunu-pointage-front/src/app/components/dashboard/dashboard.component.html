@@ -12,14 +12,14 @@
 
       <!-- Section des statistiques -->
       <div class="stats">
-        <!-- Carte pour afficher la date actuelle, placée en premier -->
-        <app-stat-card 
-          title="Date Actuelle" 
-          [value]="currentDate" 
-          iconClass="bi-calendar" 
-          iconColor="#28a745" 
-          class="date-card">
-        </app-stat-card>
+        <!-- Carte pour afficher la date et l'heure, placée en premier -->
+      <app-stat-card 
+      title="Date et Heure Actuelles" 
+      [value]="currentDate" 
+      iconClass="bi-calendar" 
+      iconColor="#28a745" 
+      class="date-card">
+      </app-stat-card>
 
         <app-stat-card title="Total Employees" [value]="countEmployes.toString()"  iconClass="bi-people" iconColor="#BF202F"></app-stat-card>
         <app-stat-card title="Total Apprenants" [value]="countEtudiant.toString()" iconClass="bi-person" iconColor="#BF202F"></app-stat-card>

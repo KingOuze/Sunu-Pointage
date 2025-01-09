@@ -37,6 +37,10 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/users/role/${role}`);
   }
 
+  //Bloquer ou debloquer un user
+  switchStatus(userId: String, status: String): Observable<any> {
+    return this.http.put(`${this.baseUrl}/users/switch-status/${userId}`, { status: status });
+  }
   // Récupérer les users par departement
   getUsersByDepartment(departmentId: String): Observable<any> {
     return this.http.get(`${this.baseUrl}/users/departement/${departmentId}`);
@@ -93,6 +97,10 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/departements/${id}`);
   }
 
+  //recuperer le cohorte pa id
+  getCohortById(id: String): Observable<any> {
+    return this.http.get(`${this.baseUrl}/cohortes/${id}`);
+  }
   // modifier un departement
   updateDepartement(id: String, data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/departements/update/${id}`, data);

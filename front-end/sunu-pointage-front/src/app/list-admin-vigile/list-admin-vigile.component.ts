@@ -27,19 +27,17 @@ export class ListAdminVigileComponent implements OnInit{
 
   users: any[] = [];
   errorMessage: string = '';
-  searchQuery: string = '';
+  searchQuery: string | null = null;
   selectedDate: string = '';
-  currentPage: number = 1; // Page actuelle
-  itemsPerPage: number = 5; // Nombre d'éléments par page
+  currentPage: number = 3; // Page actuelle
+  itemsPerPage: number = 7; // Nombre d'éléments par page
  
-
-
-  
 
   constructor(private userService: UserService, private router: Router) {}
   ngOnInit(): void {
     
     this.loadUsers();
+
   }
 
   loadUsers(): void {
@@ -68,7 +66,7 @@ export class ListAdminVigileComponent implements OnInit{
       cancelButtonColor: '#d33',
       confirmButtonText: 'Oui, supprimer!'
     }).then((result) => {
-      if(result){
+      if(result.isConfirmed){
         this.userService.deleteUser(id).subscribe({
           next: (res) => {
             Swal.fire({
@@ -95,6 +93,63 @@ export class ListAdminVigileComponent implements OnInit{
     })
  }
 
+
+     hasSelected(): boolean {
+       return this.users.some(user => user.selected);
+   }
+   
+   onDeleteSelected() {
+       const selectedIds = this.users.filter(user => user.selected).map(user => user._id);
+       if (selectedIds.length > 0) {
+       const swalWithBootstrapButtons = Swal.mixin({
+         customClass: {
+           confirmButton: "btn btn-success",
+           cancelButton: "btn btn-danger"
+         },
+         buttonsStyling: false
+       });
+       swalWithBootstrapButtons.fire({
+         title: "Etes vous sur?",
+         text: "Voulez-vous vraiment supprimer ces Utilisateurs!",
+         icon: "warning",
+         showCancelButton: true,
+         confirmButtonText: "OUI!",
+         cancelButtonText: "No, retour!",
+         reverseButtons: true
+       }).then((result) => {
+         if (result.isConfirmed) {
+           this.userService.deleteMultipleUsers(selectedIds).subscribe({
+             next: (response) => {
+             
+               Swal.fire({
+                 title: "Supprimé!",
+                 text: "Suppression Reussie",
+                 icon: "success",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
+               this.loadUsers(); // Recharge la liste après suppression
+             },
+             error: (err) => {
+               Swal.fire({
+                 icon: "error",
+                 title: "Erreur...",
+                 text: "Erreur lors de la suppression!",
+               });
+               console.error(err);
+             }
+           });
+          
+         }
+       });      
+           
+      } 
+   }
+   
+   updateSelection(user: any) {
+       user.selected = !user.selected; // Mettez à jour la sélection
+   }
+
  addUser() {
     this.router.navigate(['/ajouter']); // Redirection vers la route "ajoutadmin"
   }
@@ -102,19 +157,22 @@ export class ListAdminVigileComponent implements OnInit{
 
     // Filtrer les pointages selon la requête de recherche
   get filteredPointages() {
-    return this.users.filter((user) => {
-      const searchTerm = this.searchQuery.toLowerCase();
-      const matricule = user.matricule.toLowerCase();
-      const nom = user.nom.toLowerCase();
-      const prenom = user.prenom.toLowerCase();
-      const email = user.email.toLowerCase();
-      return (
-        matricule.includes(searchTerm) ||
-        nom.includes(searchTerm) ||
-        prenom.includes(searchTerm) ||
-        email.includes(searchTerm)
-      );
-    });
+    if (!this.searchQuery) return this.users; // Si aucune recherche, renvoyer tous les pointages
+    else {
+      return this.users.filter((user) => {
+        const searchTerm = this.searchQuery!.toLowerCase();
+        const matricule = user.matricule.toLowerCase();
+        const nom = user.nom.toLowerCase();
+        const prenom = user.prenom.toLowerCase();
+        const email = user.email.toLowerCase();
+        return (
+          matricule.includes(searchTerm) ||
+          nom.includes(searchTerm) ||
+          prenom.includes(searchTerm) ||
+          email.includes(searchTerm)
+        );
+      }); 
+    }
   }
 
    // Calculer les pointages à afficher pour la page actuelle
@@ -124,7 +182,7 @@ export class ListAdminVigileComponent implements OnInit{
     return this.filteredPointages.slice(startIndex, endIndex);
   }
 
-  // Total de pages
+  /// Total de pages
   totalPages(): number {
     return Math.ceil(this.filteredPointages.length / this.itemsPerPage);
   }

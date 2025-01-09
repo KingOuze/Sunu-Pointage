@@ -60,6 +60,8 @@ export class InscriptionComponent {
           icon: "error",
           title: "Erreur",
           text: "Erreur lors du chargement des départements",
+          showConfirmButton: false,
+          timer: 1500
         });
         console.error(err);
       }
@@ -90,7 +92,9 @@ export class InscriptionComponent {
           Swal.fire({
             title: "Succès!",
             text: "Utilisateur créé avec succès !",
-            icon: "success"
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500
           });          
           this.router.navigate(['/learners', this.departementId]); 
         },
@@ -98,7 +102,7 @@ export class InscriptionComponent {
           Swal.fire({
             icon: "error",
             title: "Erreur",
-            text: "Erreur lors de la creation de l'utilisateur",
+            text: err.error.message,
           });
           console.error(err);
         }

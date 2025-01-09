@@ -20,7 +20,7 @@ export class AssignerCarteComponent implements OnInit {
       const id = params.get('id');
       if (id !== null) {
           this.userId = id; // Assignation seulement si ce n'est pas null
-          console.log(this.userId);
+          //console.log(this.userId);
       } else {
           // Gérer le cas où l'ID est null
           console.warn('ID du membre non trouvé');
@@ -65,6 +65,8 @@ export class AssignerCarteComponent implements OnInit {
             icon: 'success',
             title: 'Succès',
             text: res.message,
+            showConfirmButton: false,
+            timer: 1500
           })
           this.goBack();
         }, error: (err) => {
@@ -73,8 +75,9 @@ export class AssignerCarteComponent implements OnInit {
             icon: 'error',
             title: 'Erreur',
             text: err.error.error,
-          })
-          this.goBack();
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
       })
     }
