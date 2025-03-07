@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { SerialPort, ReadlineParser } = require('serialport');
-const WebSocket = require('ws'); // Importer WebSocket
+//const WebSocket = require('ws'); Importer WebSocket
 const routes = require('./routes/routes');
 const multer = require('multer');
 const path = require('path');
@@ -48,12 +48,12 @@ const afficherUtilisateurs = async () => {
 };
 
 // Communication avec Arduino
-const port = new SerialPort({
+/*const port = new SerialPort({
   path: '/dev/ttyACM1', // Remplacez par le port série de votre Arduino
   baudRate: 9600,
-});
+});*/
 
-const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
+/*const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
 // Fonction pour vérifier l'utilisateur dans la base de données
 const verifyUser = async (cardId) => {
   try {
@@ -332,7 +332,7 @@ app.put('/update-pointage/:id', async (req, res) => {
 });
 
 
-
+*/
 
 
 

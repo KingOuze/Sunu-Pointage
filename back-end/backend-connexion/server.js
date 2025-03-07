@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { SerialPort } = require('serialport');
 const { ReadlineParser } = require('@serialport/parser-readline');
-const WebSocket = require('ws');
+//const WebSocket = require('ws');
 const cors = require('cors');
 const bcrypt = require('bcryptjs'); // Importer bcrypt
 
@@ -34,11 +34,11 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('users', UserSchema);
 
 // Configurer le port série pour l'Arduino
-const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 9600 });
-const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+/*const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 9600 });
+const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));*/
 
 // Serveur WebSocket
-const wss = new WebSocket.Server({ port: 3001 });
+/*const wss = new WebSocket.Server({ port: 3001 });
 
 // Diffuser l'UID scanné à tous les clients connectés via WebSocket
 parser.on('data', async (data) => {
@@ -63,7 +63,7 @@ parser.on('data', async (data) => {
   } catch (error) {
     console.error('Erreur lors de la gestion de l\'UID :', error);
   }*/
-});
+//});
 
 
 

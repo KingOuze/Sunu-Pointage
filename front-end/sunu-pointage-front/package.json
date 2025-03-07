@@ -2,9 +2,9 @@
   "name": "sunu-pointage-front",
   "version": "0.0.0",
   "scripts": {
+    "build": "ng build --configuration production",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:sunu-pointage-front": "node dist/sunu-pointage-front/server/server.mjs"
